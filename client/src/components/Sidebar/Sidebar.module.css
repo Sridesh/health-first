@@ -10,6 +10,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for depth */
   color: white;
+  z-index: 10;
 }
 
 .container_profile{

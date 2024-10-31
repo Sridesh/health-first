@@ -17,6 +17,7 @@
     "@mui/material": "^6.1.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-material-ui-carousel": "^3.4.2",
     "tinycolor": "^0.0.1",
     "tinycolor2": "^1.6.0"
   },
