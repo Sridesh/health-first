@@ -1,19 +1,64 @@
-import { Box, Stack, Typography, Zoom } from "@mui/material";
+import { useState } from "react";
+
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  useMediaQuery,
+  Zoom,
+} from "@mui/material";
 
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 import styles from "./Navbar.module.css";
-import logo from "../../../public/icon.png";
 import { theme } from "../../theme";
+import logo from "../../../public/icon.png";
 
 import AvatarCircle from "../Avatar/AvatarCircle";
-import { useState } from "react";
 
 function Navbar() {
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [openOptions, setOpenOptions] = useState(false);
+  const [openOptionsBar, setOpenOptionsBar] = useState(false);
+
+  const OptionsBar = () => (
+    <Stack
+      direction={isMobile ? "column" : "row"}
+      spacing={2}
+      sx={{
+        bgcolor: "white",
+        borderRadius: "5px",
+        position: isMobile ? "absolute" : "static",
+        padding: isMobile ? "10px 30px" : 0,
+        left: "120px",
+        zIndex: 9,
+      }}
+    >
+      {["Services", "Doctors", "About", "Contact"].map((item, index) => {
+        return (
+          <Typography
+            key={index}
+            sx={{
+              fontSize: "90%",
+              color: theme.palette.teal.main,
+              cursor: "pointer",
+              ":hover": {
+                color: theme.palette.green.main,
+              },
+            }}
+          >
+            {item}
+          </Typography>
+        );
+      })}
+    </Stack>
+  );
 
   return (
     <Box className={styles["container"]}>
@@ -29,25 +74,13 @@ function Navbar() {
           alt="Company logo"
           src={logo}
         ></Box>
-        <Stack direction={"row"} spacing={2}>
-          {["Services", "Doctors", "About", "Contact"].map((item, index) => {
-            return (
-              <Typography
-                key={index}
-                sx={{
-                  fontSize: "90%",
-                  color: theme.palette.teal.main,
-                  cursor: "pointer",
-                  ":hover": {
-                    color: theme.palette.green.main,
-                  },
-                }}
-              >
-                {item}
-              </Typography>
-            );
-          })}
-        </Stack>
+        {!isMobile ? (
+          <OptionsBar />
+        ) : (
+          <Button onClick={() => setOpenOptionsBar(!openOptionsBar)}>
+            <MenuRoundedIcon />
+          </Button>
+        )}
         <Stack
           direction={"row"}
           spacing={1.5}
@@ -104,6 +137,7 @@ function Navbar() {
           </Stack>
         </Box>
       </Zoom>
+      {isMobile && openOptionsBar && <OptionsBar />}
     </Box>
   );
 }

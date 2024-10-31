@@ -22,7 +22,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AvatarCircle from "../Avatar/AvatarCircle";
 
 function Sidebar() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const options = [
     {
@@ -50,7 +50,7 @@ function Sidebar() {
         spacing={2}
         className={styles["container_profile"]}
         sx={{
-          width: open ? "300px" : "50px",
+          width: open ? "300px" : "20px",
           transition: "width 300ms ease-in-out",
         }}
       >
