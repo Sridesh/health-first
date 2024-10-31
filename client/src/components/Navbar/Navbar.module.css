@@ -1,0 +1,30 @@
+.container {
+    width: 100vw;
+    height: 65px;
+    background-color: white;
+    position: relative;
+}
+
+.logo {
+    width: auto;
+    max-height:55px;
+    cursor: pointer;
+}
+
+.container__user-info{
+    height: 60%;
+    width: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-options{
+    position: absolute;
+    right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}

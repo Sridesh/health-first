@@ -1,0 +1,19 @@
+.container {
+  height: fit-content;
+  position: fixed;
+  left: 8px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: rgba(9, 93, 126, 0.6); /* White background with transparency */
+  backdrop-filter: blur(10px);           /* Frosted glass ef0fect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for depth */
+  color: white;
+}
+
+.container_profile{
+    display: flex;
+    align-items: center;
+
+}
