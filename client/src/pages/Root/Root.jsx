@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import Dashboard from "../Dashboard/Dashboard";
+import { Outlet } from "react-router-dom";
 
 function Root() {
   return (
@@ -9,7 +9,7 @@ function Root() {
       <Navbar />
       <Box sx={{ position: "relative" }}>
         <Sidebar />
-        <Dashboard />
+        <Outlet />
       </Box>
     </div>
   );
