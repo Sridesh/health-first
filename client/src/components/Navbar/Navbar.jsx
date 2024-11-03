@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Box,
@@ -20,6 +21,7 @@ import { theme } from "../../theme";
 import logo from "../../../public/icon.png";
 
 import AvatarCircle from "../Avatar/AvatarCircle";
+import { navbarOptions } from "../../data";
 
 function Navbar() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -40,7 +42,7 @@ function Navbar() {
         zIndex: 9,
       }}
     >
-      {["Services", "Doctors", "About", "Contact"].map((item, index) => {
+      {navbarOptions.map((item, index) => {
         return (
           <Typography
             key={index}
@@ -53,7 +55,12 @@ function Navbar() {
               },
             }}
           >
-            {item}
+            <Link
+              to={item.link}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              {item.name}
+            </Link>
           </Typography>
         );
       })}
