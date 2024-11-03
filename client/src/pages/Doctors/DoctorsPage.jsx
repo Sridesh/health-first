@@ -1,14 +1,57 @@
+import { useEffect, useState } from "react";
+
 import styles from "./Doctors.module.css";
 import { theme } from "../../theme";
 
-import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import {
+  Box,
+  InputAdornment,
+  Pagination,
+  TextField,
+  Typography,
+} from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import Card from "../../components/Card/Card";
+
+import GridView from "../../components/GridView/GridView";
 
 function DoctorsPage() {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [page, setPage] = useState(1);
+  const [pageData, setPageData] = useState([]);
+
+  const CARDS_PER_PAGE = 12;
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/doctors");
+        setData(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  useEffect(() => {
+    setPageData(data.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE));
+  }, [data, page]);
+
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
+
   return (
     <Box className={styles["container"]}>
-      <Box className={styles["header"]}>
+      <Box
+        className={styles["header"]}
+        sx={{ flexDirection: { xs: "column", sm: "row" } }}
+      >
         <Typography variant="h4" className={styles["header_heading"]}>
           Our Doctors
         </Typography>
@@ -24,6 +67,7 @@ function DoctorsPage() {
           }}
           sx={{
             backgroundColor: "white",
+            my: "15px",
             background: "rgba(9, 93, 126, 0.6)",
             borderRadius: "50px",
             color: "white",
@@ -42,10 +86,10 @@ function DoctorsPage() {
             },
           }}
         />
-        <Box sx={{ width: "40%" }}>
+        <Box sx={{ width: { xs: "100%", sm: "40%" } }}>
           <Typography
             sx={{
-              textAlign: "right",
+              textAlign: { xs: "center", sm: "right" },
               color: theme.palette.yellow.main,
             }}
           >
@@ -57,8 +101,17 @@ function DoctorsPage() {
           </Typography>
         </Box>
       </Box>
-      <Card />
-      <Card />
+      <Box className={styles["container_grid-container"]}>
+        <GridView data={pageData} />
+        <Pagination
+          page={page}
+          count={Math.ceil(data?.length / CARDS_PER_PAGE)}
+          onChange={handleChange}
+          sx={{ marginTop: "30px" }}
+          color="primary"
+          variant="outlined"
+        />
+      </Box>
     </Box>
   );
 }
