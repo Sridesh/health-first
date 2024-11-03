@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 
 import image from "../../../public/2.png";
 import { theme } from "../../theme";
-import { useState } from "react";
+// import { useState } from "react";
 
-function Card() {
-  const [isHovered, setIsHovered] = useState(false);
+function Card({ data }) {
+  //   const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Box
       sx={{
@@ -15,10 +16,17 @@ function Card() {
         borderRadius: "5px",
         boxShadow: "0 4px 4px rgba(0, 0, 0, 0.2)",
         width: "180px",
-        height: "220px",
+        height: "250px",
         overflow: "hidden",
+        cursor: "pointer",
+        position: "relative",
+        ":hover": {
+          boxShadow: `0 0px 10px rgba(76, 204, 255, 0.6)}`,
+        },
       }}
       //   boxShadow={1}
+      //   onMouseEnter={() => setIsHovered(true)}
+      //   onMouseOut={() => setIsHovered(false)}
     >
       <Box
         sx={{
@@ -29,27 +37,55 @@ function Card() {
           backgroundRepeat: "no-repeat",
           width: "100%",
           height: "100px",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
         }}
-      />
-      <Box sx={{ flexGrow: 1, padding: "15px" }}>
+      >
+        <Chip
+          label={
+            data.availability ? "Booking available" : "Booking unavailable"
+          }
+          color="success"
+          sx={{
+            margin: "5px",
+            fontSize: "70%",
+            background: data.availability
+              ? "rgba(28, 207, 0, 0.8)"
+              : "rgba(255, 0, 0, 0.8)",
+          }}
+          size="small"
+        />
+      </Box>
+      <Box sx={{ flexGrow: 1, padding: "15px", overflow: "hidden" }}>
         <Typography
           sx={{
             fontWeight: "bold",
             fontSize: "90%",
-            color: theme.palette.black.main,
+            color: theme.palette.gray.main,
           }}
         >
-          Prof. Nadeena Jayasuriya
+          {data.status + " " + data.name}
         </Typography>
-        <Typography sx={{ color: theme.palette.teal.main, fontSize: "80%" }}>
-          Oral Surgon
+        <Typography sx={{ color: theme.palette.teal.main, fontSize: "90%" }}>
+          {data.specialisation}
+        </Typography>
+        <Typography
+          sx={{ color: theme.palette.light_gray.main, fontSize: "70%" }}
+        >
+          {data.qualification}
         </Typography>
       </Box>
+      <Button
+        sx={{ marginLeft: "30%", position: "absolute", bottom: 1, right: 1 }}
+      >
+        Channel now
+      </Button>
     </Box>
   );
 }
 
 Card.propTypes = {
-  //   shadow: PropTypes.string,
+  data: PropTypes.object,
 };
 export default Card;

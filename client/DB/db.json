@@ -1,0 +1,145 @@
+{
+    "doctors":[
+        {
+          "name": "Nuwan Perera",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Anura Jayawardena",
+          "status": "Prof.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics), FRCS",
+          "availability": false
+        },
+        {
+          "name": "Chamari Fernando",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Mahesh Weerasinghe",
+          "status": "Prof.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics), FRCS",
+          "availability": true
+        },
+        {
+          "name": "Dinesh Silva",
+          "status": "Dr.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Ortho)",
+          "availability": false
+        },
+        {
+          "name": "Renuka Samarakoon",
+          "status": "Prof.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, PhD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Asanka Peris",
+          "status": "Dr.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics)",
+          "availability": true
+        },
+        {
+          "name": "Sarath Senanayake",
+          "status": "Prof.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology), FRCP",
+          "availability": false
+        },
+        {
+          "name": "Tharindu Bandara",
+          "status": "Dr.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics)",
+          "availability": true
+        },
+        {
+          "name": "Priyanka Wickramasinghe",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Malinda Jayasuriya",
+          "status": "Prof.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics), FRCS",
+          "availability": true
+        },
+        {
+          "name": "Shalika de Silva",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": false
+        },
+        {
+          "name": "Anjali Perera",
+          "status": "Prof.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Ortho), FRCS",
+          "availability": true
+        },
+        {
+          "name": "Janaka Ratnayake",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Kumari Wijesinghe",
+          "status": "Dr.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Ortho)",
+          "availability": false
+        },
+        {
+          "name": "Suresh Karunaratne",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        },
+        {
+          "name": "Ishara Fernando",
+          "status": "Prof.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics), FRCS",
+          "availability": true
+        },
+        {
+          "name": "Madhavi Rajapakse",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": false
+        },
+        {
+          "name": "Kasun Amarasekara",
+          "status": "Dr.",
+          "specialisation": "Orthopedic Surgeon",
+          "qualification": "MBBS, MS (Orthopedics)",
+          "availability": true
+        },
+        {
+          "name": "Nadeeka Senarath",
+          "status": "Dr.",
+          "specialisation": "Neurologist",
+          "qualification": "MBBS, MD (Neurology)",
+          "availability": true
+        }
+      ]
+      
+}
