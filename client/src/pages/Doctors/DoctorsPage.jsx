@@ -3,6 +3,7 @@ import { theme } from "../../theme";
 
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import Card from "../../components/Card/Card";
 
 function DoctorsPage() {
   return (
@@ -56,6 +57,8 @@ function DoctorsPage() {
           </Typography>
         </Box>
       </Box>
+      <Card />
+      <Card />
     </Box>
   );
 }

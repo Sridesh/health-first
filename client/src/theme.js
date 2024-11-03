@@ -17,5 +17,17 @@ export const theme = createTheme({
     bg_blue: {
       main: "#f1f9ff",
     },
+    black: {
+      main: "#121212",
+    },
+    dark_gray: {
+      main: "#222222",
+    },
+    gray: {
+      main: "#2E2E2E",
+    },
+    light_gray: {
+      main: "#383838",
+    },
   },
 });
