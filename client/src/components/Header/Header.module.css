@@ -1,0 +1,16 @@
+.header {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    padding-left: 90px;
+    background-image: linear-gradient(to right,#095d7e,#073648);
+    border-radius: 10px;
+}
+
+.header_heading{
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}

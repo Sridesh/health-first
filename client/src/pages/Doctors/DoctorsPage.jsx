@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
 
 import styles from "./Doctors.module.css";
-import { theme } from "../../theme";
 
 import axios from "axios";
-import {
-  Box,
-  InputAdornment,
-  Pagination,
-  TextField,
-  Typography,
-} from "@mui/material";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { Box, Pagination } from "@mui/material";
 
 import GridView from "../../components/GridView/GridView";
+import GridLoader from "../../components/GridView/GridLoader";
+import Header from "../../components/Header/Header";
 
 function DoctorsPage() {
   const [data, setData] = useState([]);
@@ -48,61 +42,14 @@ function DoctorsPage() {
 
   return (
     <Box className={styles["container"]}>
-      <Box
-        className={styles["header"]}
-        sx={{ flexDirection: { xs: "column", sm: "row" } }}
-      >
-        <Typography variant="h4" className={styles["header_heading"]}>
-          Our Doctors
-        </Typography>
-        <TextField
-          type="text"
-          placeholder="Search for doctors"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchOutlinedIcon sx={{ color: "white" }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            backgroundColor: "white",
-            my: "15px",
-            background: "rgba(9, 93, 126, 0.6)",
-            borderRadius: "50px",
-            color: "white",
-            "& .MuiInputBase-input": {
-              color: "white",
-              fontWeight: "100 !important",
-            },
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderRadius: "50px",
-              border: "none",
-            },
-            "&.Mui-focused": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                border: "none",
-              },
-            },
-          }}
-        />
-        <Box sx={{ width: { xs: "100%", sm: "40%" } }}>
-          <Typography
-            sx={{
-              textAlign: { xs: "center", sm: "right" },
-              color: theme.palette.yellow.main,
-            }}
-          >
-            Discover our team of compassionate and skilled doctors, ready to
-            provide the highest standard of care. Browse specialties, view
-            profiles, and find the perfect match for your healthcare needs. From
-            expert consultations to personalized treatment, our doctors are here
-            to support you on your wellness journey.
-          </Typography>
-        </Box>
-      </Box>
+      <Header
+        heading={"Our Doctors"}
+        description={
+          "Discover our team of compassionate and skilled doctors, ready to provide the highest standard of care. Browse specialties, view profiles, and find the perfect match for your healthcare needs. From expert consultations to personalized treatment, our doctors are here to support you on your wellness journey."
+        }
+      />
       <Box className={styles["container_grid-container"]}>
-        <GridView data={pageData} />
+        {isLoading ? <GridLoader /> : <GridView data={pageData} />}
         <Pagination
           page={page}
           count={Math.ceil(data?.length / CARDS_PER_PAGE)}
