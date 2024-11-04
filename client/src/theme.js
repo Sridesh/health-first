@@ -11,6 +11,9 @@ export const theme = createTheme({
     teal: {
       main: "#095d7e",
     },
+    sky_blue: {
+      main: "#009bde",
+    },
     blue: {
       main: "#ccecee",
     },

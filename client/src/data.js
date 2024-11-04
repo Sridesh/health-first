@@ -1,5 +1,3 @@
-import MedicalInformationOutlinedIcon from "@mui/icons-material/MedicalInformationOutlined";
-
 export const servicesData = [
   {
     name: "Channelling",

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 
 import image from "../../../public/2.png";
 import { theme } from "../../theme";
@@ -57,7 +57,11 @@ function Card({ data }) {
           size="small"
         />
       </Box>
-      <Box sx={{ flexGrow: 1, padding: "15px", overflow: "hidden" }}>
+      <Stack
+        direction={"column"}
+        spacing={0.3}
+        sx={{ flexGrow: 1, padding: "15px", overflow: "auto" }}
+      >
         <Typography
           sx={{
             fontWeight: "bold",
@@ -67,7 +71,7 @@ function Card({ data }) {
         >
           {data.status + " " + data.name}
         </Typography>
-        <Typography sx={{ color: theme.palette.teal.main, fontSize: "90%" }}>
+        <Typography sx={{ color: theme.palette.teal.main, fontSize: "80%" }}>
           {data.specialisation}
         </Typography>
         <Typography
@@ -75,9 +79,15 @@ function Card({ data }) {
         >
           {data.qualification}
         </Typography>
-      </Box>
+      </Stack>
       <Button
-        sx={{ marginLeft: "30%", position: "absolute", bottom: 1, right: 1 }}
+        sx={{
+          padding: "10px",
+          position: "absolute",
+          bottom: 1,
+          right: 1,
+          fontSize: "70%",
+        }}
       >
         Channel now
       </Button>
