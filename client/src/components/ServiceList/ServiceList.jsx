@@ -12,6 +12,7 @@ import {
   Divider,
   Modal,
   Pagination,
+  Skeleton,
   Stack,
   Tooltip,
   Typography,
@@ -95,12 +96,26 @@ function ServiceList() {
     </Box>
   );
 
+  const ElementLoader = () => (
+    <Box
+      className={styles["element"]}
+      sx={{ width: { xs: "80%", sm: "70%" }, mb: "10px" }}
+    >
+      <Box>
+        <Skeleton animation="wave" height={15} width="150px" />
+        <Skeleton animation="wave" height={10} width="100px" />
+      </Box>
+
+      <Skeleton animation="wave" height={40} width="30%" />
+    </Box>
+  );
+
   return (
     <Box className={styles["container"]}>
       <Box className={styles["container_list"]}>
         <Typography
-          variant="h6"
-          sx={{ color: theme.palette.green.main, my: "20px" }}
+          variant="h5"
+          sx={{ color: theme.palette.green.main, mb: "20px" }}
         >
           Select a service
         </Typography>
@@ -133,12 +148,20 @@ function ServiceList() {
           </Button>
         </Stack>
         <Divider sx={{ width: "80%", my: "10px" }} />
-        {pageData.map((item, index) => (
-          <>
-            <Element data={item} />
-            <Divider sx={{ width: "60%" }} />
-          </>
-        ))}
+        {pageData.length > 0
+          ? pageData.map((item) => (
+              <>
+                <Element data={item} />
+                <Divider sx={{ width: "60%" }} />
+              </>
+            ))
+          : [1, 2, 3].map(() => (
+              <>
+                <ElementLoader />
+
+                <Divider sx={{ width: "60%" }} />
+              </>
+            ))}
         <Pagination
           color="primary"
           variant="outlined"
@@ -148,6 +171,8 @@ function ServiceList() {
           sx={{ mt: "25px" }}
         />
       </Box>
+
+      {/* Service Info Modal */}
       <Modal
         open={open}
         onClose={handleClose}

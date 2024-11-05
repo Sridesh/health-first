@@ -11,7 +11,7 @@ import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import Header from "../../components/Header/Header";
 import ServiceList from "../../components/ServiceList/ServiceList";
 
-const Option = ({ icon, text, link }) => (
+const Option = ({ icon, text }) => (
   <Box
     display={"flex"}
     flexDirection={"column"}
