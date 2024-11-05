@@ -36,7 +36,7 @@ function Header({ heading, onChange, description }) {
       </Typography>
       <TextField
         type="text"
-        placeholder={"Search " + heading.split(" ")[1].toLowerCase()}
+        placeholder={"Search " + heading?.split(" ")[1].toLowerCase()}
         onChange={handleChange}
         InputProps={{
           endAdornment: (

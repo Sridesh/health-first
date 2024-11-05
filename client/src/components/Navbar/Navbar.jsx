@@ -130,13 +130,37 @@ function Navbar() {
           }}
           boxShadow={1}
         >
-          <Stack direction={"row"} spacing={1} alignItems={"center"}>
+          <Stack
+            direction={"row"}
+            spacing={1}
+            alignItems={"center"}
+            sx={{
+              cursor: "pointer",
+              width: "100%",
+              mt: "10px",
+              ":hover": {
+                bgcolor: theme.palette.blue.main,
+              },
+            }}
+          >
             <PermIdentityRoundedIcon />
             <Typography sx={{ fontSize: "80%", fontWeight: "bold" }}>
               Profile
             </Typography>
           </Stack>
-          <Stack direction={"row"} spacing={1} alignItems={"center"}>
+          <Stack
+            direction={"row"}
+            spacing={1}
+            alignItems={"center"}
+            sx={{
+              cursor: "pointer",
+              width: "100%",
+              mt: "10px",
+              ":hover": {
+                bgcolor: theme.palette.blue.main,
+              },
+            }}
+          >
             <LogoutRoundedIcon />
             <Typography sx={{ fontSize: "80%", fontWeight: "bold" }}>
               Logout

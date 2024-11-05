@@ -4,6 +4,7 @@ import DoctorsPage from "./pages/Doctors/DoctorsPage";
 import Root from "./pages/Root/Root";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import LabServices from "./pages/LabServices/LabServices";
+import AllServices from "./pages/AllServices/AllServices";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
         element: <DoctorsPage />,
       },
       {
-        path: "/lab-services",
+        path: "/services",
+        element: <AllServices />,
+      },
+      {
+        path: "/services/lab-services",
         element: <LabServices />,
       },
     ],
