@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./AllServices.module.css";
 
-import { Box, Divider, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 
 import Header from "../../components/Header/Header";
 import { theme } from "../../theme";
@@ -10,8 +11,8 @@ import { theme } from "../../theme";
 const options = [
   {
     img_url: "https://img.icons8.com/3d-fluency/94/doctors-bag.png",
-    title: "Pharmaceutical",
-    link: "pharmaceutical-services",
+    title: "Medical Products",
+    link: "medical-products",
     color: "rgba(0,130,162, 0.7)",
   },
   {
@@ -35,38 +36,48 @@ const options = [
   },
 ];
 
-const Tile = ({ data }) => (
-  <Box
-    className={styles["tile"]}
-    sx={{
-      bgcolor: data.color,
-      width: "150px",
-      height: "150px",
-      backdropFilter: "blur(3px)",
-      ":hover": {
-        width: "165px",
-        height: "165px",
-      },
-      transition: "width 200ms ease-in, height 200ms ease-in",
-    }}
-  >
-    <Box
-      sx={{
-        backgroundImage: `url(${data.img_url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "50px",
-        width: "50px",
-      }}
-    />
-    <Typography sx={{ color: "white", fontWeight: 500 }}>
-      {data.title}
-    </Typography>
-  </Box>
-);
-
 function AllServices() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
+
+  const handleClick = (path) => {
+    navigate(path);
+  };
+
+  const Tile = ({ data }) => (
+    <Box
+      className={styles["tile"]}
+      sx={{
+        bgcolor: data.color,
+        width: "150px",
+        height: "150px",
+        backdropFilter: "blur(3px)",
+        ":hover": {
+          width: "165px",
+          height: "165px",
+        },
+        transition: "width 200ms ease-in, height 200ms ease-in",
+      }}
+      onClick={() => handleClick(data.link)}
+    >
+      <Box
+        sx={{
+          backgroundImage: `url(${data.img_url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "50px",
+          width: "50px",
+        }}
+      />
+      <Typography sx={{ color: "white", fontWeight: 500 }}>
+        {data.title}
+      </Typography>
+    </Box>
+  );
+
+  Tile.propTypes = {
+    data: PropTypes.object,
+  };
 
   return (
     <Box className={styles["container"]}>
@@ -115,9 +126,5 @@ function AllServices() {
     </Box>
   );
 }
-
-Tile.propTypes = {
-  data: PropTypes.object,
-};
 
 export default AllServices;
