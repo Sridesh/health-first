@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 import styles from "./ServiceList.module.css";
 import { theme } from "../../theme";
 
-import axios from "axios";
 import {
   Box,
   Button,
@@ -23,10 +22,7 @@ import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 
-function ServiceList() {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
+function ServiceList({ data }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -34,20 +30,6 @@ function ServiceList() {
   const [pageData, setPageData] = useState([]);
 
   const ITEMS_PER_PAGE = 10;
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/labs");
-        setData(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetch();
-  }, []);
 
   useEffect(() => {
     setPageData(data.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE));
@@ -267,6 +249,10 @@ function ServiceList() {
 
 Element.propTypes = {
   data: PropTypes.object,
+};
+
+ServiceList.propTypes = {
+  data: PropTypes.array,
 };
 
 export default ServiceList;

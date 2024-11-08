@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import styles from "./LabServices.module.css";
+import styles from "./ScansPage.module.css";
 import { theme } from "../../theme";
 
 import axios from "axios";
@@ -35,13 +35,13 @@ const Option = ({ icon, text }) => (
   </Box>
 );
 
-function LabServices() {
+function ScansPage() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/labs");
+        const response = await axios.get("http://localhost:3000/scans");
         setData(response.data);
       } catch (error) {
         console.log(error);
@@ -50,6 +50,7 @@ function LabServices() {
 
     fetch();
   }, []);
+
   return (
     <Box className={styles["container"]}>
       <Header
@@ -90,4 +91,4 @@ Option.propTypes = {
   link: PropTypes.string,
 };
 
-export default LabServices;
+export default ScansPage;

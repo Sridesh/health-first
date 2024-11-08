@@ -141,214 +141,111 @@
           "availability": true
         }
       ],
+
       "labs": [
         {
-          "test_name": "Complete Blood Count (CBC)",
+          "test_name": "Full Blood Count (FBC)",
           "category": "Hematology",
-          "description": "Analyzes red and white blood cells and platelets to assess health and identify issues like anemia and infections.",
+          "description": "Measures red and white blood cell levels to assess overall health and detect disorders.",
           "price": 1500,
-          "centers": ["Colombo Central Lab", "Kandy Medical Center", "Galle Diagnostic Services"],
+          "centers": ["Colombo Central Lab", "Galle Diagnostic Services", "Jaffna Health Lab"],
           "body_part": ["Blood"]
-        },
-        {
-          "test_name": "Lipid Profile",
-          "category": "Biochemistry",
-          "description": "Measures cholesterol and triglycerides to evaluate heart health and risk of cardiovascular disease.",
-          "price": 2200,
-          "centers": ["Colombo Central Lab", "Jaffna Health Diagnostics", "Negombo Wellness Clinic"],
-          "body_part": ["Blood"]
-        },
-        {
-          "test_name": "Thyroid Function Test",
-          "category": "Endocrinology",
-          "description": "Assesses thyroid hormone levels to diagnose thyroid disorders like hypothyroidism or hyperthyroidism.",
-          "price": 1800,
-          "centers": ["Kurunegala Diagnostic Center", "Galle Diagnostic Services", "Matara Medical Hub"],
-          "body_part": ["Neck"]
         },
         {
           "test_name": "Liver Function Test (LFT)",
           "category": "Biochemistry",
-          "description": "Evaluates liver health by measuring proteins, enzymes, and bilirubin in the blood.",
+          "description": "Evaluates liver enzymes and proteins to assess liver health and detect liver diseases.",
+          "price": 2000,
+          "centers": ["Colombo Medical Center", "Matara Health Diagnostics", "Kandy Medical Hub"],
+          "body_part": ["Liver"]
+        },
+        {
+          "test_name": "Thyroid Profile",
+          "category": "Endocrinology",
+          "description": "Measures thyroid hormones to evaluate thyroid function and detect thyroid disorders.",
           "price": 2500,
-          "centers": ["Colombo Central Lab", "Kandy Medical Center", "Nugegoda Path Labs"],
+          "centers": ["Colombo Central Lab", "Kandy Diagnostic Services", "Matara Medical Hub"],
+          "body_part": ["Thyroid"]
+        },
+        {
+          "test_name": "Lipid Profile",
+          "category": "Cardiology",
+          "description": "Measures cholesterol and triglyceride levels to assess cardiovascular health.",
+          "price": 1800,
+          "centers": ["Galle Diagnostic Services", "Colombo Medical Lab", "Jaffna Health Diagnostics"],
           "body_part": ["Blood"]
         },
         {
           "test_name": "Kidney Function Test (KFT)",
-          "category": "Biochemistry",
-          "description": "Assesses kidney health by measuring levels of urea and creatinine in the blood.",
+          "category": "Nephrology",
+          "description": "Analyzes blood markers to assess kidney health and detect kidney disorders.",
           "price": 2300,
-          "centers": ["Batticaloa Health Solutions", "Colombo Central Lab", "Negombo Wellness Clinic"],
-          "body_part": ["Blood"]
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Galle Diagnostic Services"],
+          "body_part": ["Kidney"]
         },
         {
-          "test_name": "Glucose Tolerance Test",
-          "category": "Diabetes",
-          "description": "Monitors blood sugar levels over time to diagnose diabetes and insulin resistance.",
-          "price": 1500,
-          "centers": ["Colombo Central Lab", "Kandy Medical Center", "Gampaha Diagnostic Center"],
-          "body_part": ["Blood"]
-        },
-        {
-          "test_name": "Urine Routine Examination",
-          "category": "General",
-          "description": "Checks urine for infections, diseases, and other health indicators such as glucose or protein levels.",
+          "test_name": "Blood Glucose Test",
+          "category": "Endocrinology",
+          "description": "Measures blood sugar levels to monitor and diagnose diabetes.",
           "price": 800,
-          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Jaffna Health Diagnostics"],
+          "centers": ["Colombo Medical Center", "Galle Diagnostic Services", "Kandy Medical Hub"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Prostate-Specific Antigen (PSA) Test",
+          "category": "Oncology",
+          "description": "Measures PSA levels to screen for prostate cancer in men.",
+          "price": 3000,
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Kandy Medical Center"],
+          "body_part": ["Prostate"]
+        },
+        {
+          "test_name": "Urinalysis",
+          "category": "General Medicine",
+          "description": "Examines urine sample to detect infections, kidney issues, and other disorders.",
+          "price": 500,
+          "centers": ["Jaffna Health Diagnostics", "Kandy Medical Center", "Galle Diagnostic Services"],
           "body_part": ["Urine"]
+        },
+        {
+          "test_name": "HbA1c Test",
+          "category": "Endocrinology",
+          "description": "Evaluates blood sugar control over the past 2-3 months, used for diabetes monitoring.",
+          "price": 1500,
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Kandy Diagnostic Services"],
+          "body_part": ["Blood"]
         },
         {
           "test_name": "Electrolyte Panel",
           "category": "Biochemistry",
-          "description": "Measures levels of electrolytes like sodium, potassium, and chloride to maintain fluid balance and nerve function.",
+          "description": "Assesses levels of sodium, potassium, and chloride to evaluate electrolyte balance.",
+          "price": 1400,
+          "centers": ["Colombo Medical Center", "Galle Diagnostic Services", "Matara Medical Hub"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Iron Studies",
+          "category": "Hematology",
+          "description": "Measures iron levels to diagnose anemia and iron deficiency.",
           "price": 2000,
-          "centers": ["Galle Diagnostic Services", "Negombo Wellness Clinic", "Colombo Central Lab"],
+          "centers": ["Galle Diagnostic Services", "Colombo Central Lab", "Jaffna Health Diagnostics"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Calcium Test",
+          "category": "Endocrinology",
+          "description": "Checks blood calcium levels to assess bone health and detect abnormalities.",
+          "price": 1200,
+          "centers": ["Matara Health Diagnostics", "Kandy Medical Hub", "Colombo Central Lab"],
           "body_part": ["Blood"]
         },
         {
           "test_name": "Vitamin D Test",
-          "category": "Nutrition",
-          "description": "Checks vitamin D levels, which are crucial for bone health and immune system support.",
-          "price": 3500,
-          "centers": ["Kandy Medical Center", "Colombo Central Lab", "Nugegoda Path Labs"],
+          "category": "Endocrinology",
+          "description": "Measures vitamin D levels to assess bone and immune health.",
+          "price": 2800,
+          "centers": ["Colombo Medical Center", "Galle Diagnostic Services", "Jaffna Health Lab"],
           "body_part": ["Blood"]
-        },
-        {
-          "test_name": "HBA1C Test",
-          "category": "Diabetes",
-          "description": "Indicates average blood glucose levels over the past 2-3 months to monitor diabetes management.",
-          "price": 1800,
-          "centers": ["Colombo Central Lab", "Jaffna Health Diagnostics", "Matara Medical Hub"],
-          "body_part": ["Blood"]
-        },
-        {
-          "test_name": "COVID-19 PCR Test",
-          "category": "Virology",
-          "description": "Detects COVID-19 virus by analyzing a nasal swab sample to confirm infection.",
-          "price": 6000,
-          "centers": ["Colombo Central Lab", "Kandy Medical Center", "Gampaha Diagnostic Center"],
-          "body_part": ["Nasal"]
-        },
-        {
-          "test_name": "Chest X-ray",
-          "category": "Radiology",
-          "description": "Provides imaging of the lungs and heart to identify infections, fractures, or lung disease.",
-          "price": 3500,
-          "centers": ["Colombo Imaging Center", "Galle Diagnostic Services", "Batticaloa Health Solutions"],
-          "body_part": ["Chest"]
-        },
-        {
-          "test_name": "ECG (Electrocardiogram)",
-          "category": "Cardiology",
-          "description": "Records heart activity to detect abnormalities like arrhythmias and heart conditions.",
-          "price": 3000,
-          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Negombo Wellness Clinic"],
-          "body_part": ["Heart"]
-        },
-        {
-          "test_name": "Eye Pressure Test",
-          "category": "Ophthalmology",
-          "description": "Measures intraocular pressure to assess risk of glaucoma and other eye conditions.",
-          "price": 1200,
-          "centers": ["Colombo Eye Care Center", "Kandy Vision Clinic", "Galle Diagnostic Services"],
-          "body_part": ["Eye"]
-        },
-        {
-          "test_name": "Retinal Imaging",
-          "category": "Ophthalmology",
-          "description": "Captures detailed images of the retina to diagnose eye conditions like diabetic retinopathy.",
-          "price": 5000,
-          "centers": ["Colombo Eye Care Center", "Matara Medical Hub", "Jaffna Health Diagnostics"],
-          "body_part": ["Eye"]
-        },
-        {
-          "test_name": "Bone Density Scan",
-          "category": "Radiology",
-          "description": "Measures bone mineral density to detect osteoporosis and assess fracture risk.",
-          "price": 4500,
-          "centers": ["Kandy Medical Center", "Colombo Central Lab", "Galle Diagnostic Services"],
-          "body_part": ["Bones"]
-        },
-        {
-          "test_name": "Allergy Test",
-          "category": "Immunology",
-          "description": "Tests for allergic reactions to specific substances like pollen, dust, and food.",
-          "price": 3200,
-          "centers": ["Colombo Allergy Center", "Matara Medical Hub", "Galle Diagnostic Services"],
-          "body_part": ["Skin"]
-        },
-        {
-          "test_name": "Pap Smear",
-          "category": "Gynecology",
-          "description": "Screens for cervical cancer by detecting abnormal cells in cervical tissue.",
-          "price": 2500,
-          "centers": ["Colombo Women's Health Center", "Kandy Medical Center", "Batticaloa Health Solutions"],
-          "body_part": ["Cervix"]
-        },
-        {
-          "test_name": "MRI Brain Scan",
-          "category": "Radiology",
-          "description": "Creates detailed images of the brain to identify tumors, strokes, and other neurological conditions.",
-          "price": 15000,
-          "centers": ["Colombo Imaging Center", "Kandy Medical Center", "Gampaha Diagnostic Center"],
-          "body_part": ["Brain"]
-        },
-        {
-          "test_name": "CT Chest Scan",
-          "category": "Radiology",
-          "description": "Detailed imaging of the chest area to diagnose lung conditions, tumors, and chest injuries.",
-          "price": 12000,
-          "centers": ["Galle Diagnostic Services", "Colombo Central Lab", "Batticaloa Health Solutions"],
-          "body_part": ["Chest"]
-        },
-        {
-          "test_name": "Stool Routine Examination",
-          "category": "General",
-          "description": "Analyzes stool samples to detect infections, digestive issues, and parasites.",
-          "price": 900,
-          "centers": ["Matara Medical Hub", "Jaffna Health Diagnostics", "Colombo Central Lab"],
-          "body_part": ["Stool"]
-        },
-        {
-          "test_name": "Ultrasound Abdomen",
-          "category": "Radiology",
-          "description": "Uses sound waves to visualize abdominal organs, helping to detect issues in the liver, kidneys, and gallbladder.",
-          "price": 4000,
-          "centers": ["Colombo Imaging Center", "Kandy Medical Center", "Gampaha Diagnostic Center"],
-          "body_part": ["Abdomen"]
-        },
-        {
-          "test_name": "Mammogram",
-          "category": "Radiology",
-          "description": "An X-ray of breast tissue to detect early signs of breast cancer.",
-          "price": 5000,
-          "centers": ["Colombo Women's Health Center", "Kandy Medical Center", "Matara Medical Hub"],
-          "body_part": ["Breast"]
-        },
-        {
-          "test_name": "PSA Test",
-          "category": "Oncology",
-          "description": "Measures prostate-specific antigen levels to screen for prostate cancer risk.",
-          "price": 3000,
-          "centers": ["Colombo Men's Health Center", "Jaffna Health Diagnostics", "Kandy Medical Center"],
-          "body_part": ["Blood"]
-        },
-        {
-          "test_name": "Spirometry",
-          "category": "Pulmonology",
-          "description": "Measures lung function and breathing patterns, used in asthma and COPD diagnosis.",
-          "price": 2500,
-          "centers": ["Colombo Respiratory Clinic", "Galle Diagnostic Services", "Matara Medical Hub"],
-          "body_part": ["Lung"]
-        },
-        {
-          "test_name": "Bone Marrow Biopsy",
-          "category": "Hematology",
-          "description": "Extracts bone marrow for analysis to diagnose blood disorders and cancers.",
-          "price": 12000,
-          "centers": ["Colombo Central Lab", "Kandy Medical Center", "Galle Diagnostic Services"],
-          "body_part": ["Bone"]
         },
         {
           "test_name": "Sputum Culture",
@@ -359,20 +256,215 @@
           "body_part": ["Lung"]
         },
         {
-          "test_name": "Echocardiogram",
+          "test_name": "H. Pylori Antigen Test",
+          "category": "Gastroenterology",
+          "description": "Detects H. pylori bacteria to diagnose stomach infections.",
+          "price": 1000,
+          "centers": ["Kandy Medical Center", "Colombo Health Lab", "Matara Medical Hub"],
+          "body_part": ["Stomach"]
+        },
+        {
+          "test_name": "Blood Urea Nitrogen (BUN)",
+          "category": "Nephrology",
+          "description": "Measures blood urea levels to assess kidney function.",
+          "price": 1300,
+          "centers": ["Galle Diagnostic Services", "Colombo Central Lab", "Kandy Medical Hub"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Hemoglobin Test",
+          "category": "Hematology",
+          "description": "Measures hemoglobin levels to assess anemia and oxygen-carrying capacity.",
+          "price": 800,
+          "centers": ["Jaffna Health Diagnostics", "Matara Medical Hub", "Colombo Medical Center"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Erythrocyte Sedimentation Rate (ESR)",
+          "category": "Hematology",
+          "description": "Measures inflammation by assessing how quickly red blood cells settle.",
+          "price": 1000,
+          "centers": ["Colombo Central Lab", "Galle Diagnostic Services", "Matara Health Diagnostics"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Albumin Test",
+          "category": "Biochemistry",
+          "description": "Measures blood albumin levels to assess liver and kidney health.",
+          "price": 1100,
+          "centers": ["Kandy Medical Hub", "Colombo Central Lab", "Galle Diagnostic Services"],
+          "body_part": ["Blood"]
+        },
+        {
+          "test_name": "Prothrombin Time (PT)",
+          "category": "Hematology",
+          "description": "Measures blood clotting time to detect bleeding disorders.",
+          "price": 1800,
+          "centers": ["Colombo Medical Center", "Jaffna Health Diagnostics", "Galle Diagnostic Services"],
+          "body_part": ["Blood"]
+        }
+      ]
+      ,
+      "scans":[
+        {
+          "test_name": "MRI Scan",
+          "category": "Radiology",
+          "description": "Uses magnetic fields to create detailed images of organs and tissues.",
+          "price": 15000,
+          "centers": ["Colombo Imaging Center", "Kandy Medical Hub", "Galle Diagnostic Services"],
+          "body_part": ["Brain", "Spine"]
+        },
+        {
+          "test_name": "CT Scan",
+          "category": "Radiology",
+          "description": "Combines X-rays to produce cross-sectional images for detailed examination.",
+          "price": 12000,
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Jaffna Imaging Services"],
+          "body_part": ["Abdomen", "Chest"]
+        },
+        {
+          "test_name": "X-Ray",
+          "category": "Radiology",
+          "description": "Captures images of bones and tissues to detect fractures and other issues.",
+          "price": 2500,
+          "centers": ["Colombo Imaging Center", "Galle Diagnostic Services", "Kandy Medical Center"],
+          "body_part": ["Bone"]
+        },
+        {
+          "test_name": "Ultrasound",
+          "category": "Radiology",
+          "description": "Uses sound waves to visualize organs, blood flow, and developing fetuses.",
+          "price": 4000,
+          "centers": ["Matara Health Diagnostics", "Jaffna Health Lab", "Kandy Diagnostic Services"],
+          "body_part": ["Abdomen", "Pelvis"]
+        },
+        {
+          "test_name": "Mammogram",
+          "category": "Radiology",
+          "description": "X-ray imaging of the breasts to screen for breast cancer.",
+          "price": 6000,
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Galle Diagnostic Services"],
+          "body_part": ["Breast"]
+        },
+        {
+          "test_name": "PET Scan",
+          "category": "Nuclear Medicine",
+          "description": "Uses radioactive tracers to show metabolic activity in tissues and organs.",
+          "price": 25000,
+          "centers": ["Kandy Imaging Center", "Colombo Medical Center", "Jaffna Imaging Services"],
+          "body_part": ["Brain", "Heart"]
+        },
+        {
+          "test_name": "Bone Density Scan",
+          "category": "Radiology",
+          "description": "Assesses bone strength to detect osteoporosis or other conditions.",
+          "price": 4500,
+          "centers": ["Colombo Imaging Center", "Matara Medical Hub", "Kandy Diagnostic Services"],
+          "body_part": ["Spine", "Hip"]
+        },
+        {
+          "test_name": "DEXA Scan",
+          "category": "Radiology",
+          "description": "Measures bone mineral density to assess osteoporosis risk.",
+          "price": 7000,
+          "centers": ["Jaffna Health Lab", "Colombo Medical Hub", "Kandy Diagnostic Services"],
+          "body_part": ["Spine", "Hip"]
+        },
+        {
+          "test_name": "Echo Cardiogram",
           "category": "Cardiology",
-          "description": "Ultrasound imaging of the heart to examine structure and assess function.",
-          "price": 8000,
-          "centers": ["Galle Diagnostic Services", "Colombo Central Lab", "Kandy Medical Center"],
+          "description": "Ultrasound imaging of the heart to assess structure and function.",
+          "price": 8500,
+          "centers": ["Colombo Central Lab", "Galle Diagnostic Services", "Matara Health Diagnostics"],
           "body_part": ["Heart"]
         },
         {
-          "test_name": "Hearing Test",
-          "category": "Audiology",
-          "description": "Evaluates hearing to detect loss and other ear-related issues.",
-          "price": 1200,
-          "centers": ["Colombo Audiology Center", "Jaffna Health Diagnostics", "Kandy Medical Center"],
-          "body_part": ["Ear"]
+          "test_name": "Chest CT Scan",
+          "category": "Radiology",
+          "description": "Specialized CT for chest area, used to assess lung and heart health.",
+          "price": 13500,
+          "centers": ["Colombo Medical Center", "Galle Diagnostic Services", "Kandy Imaging Center"],
+          "body_part": ["Chest"]
+        },
+        {
+          "test_name": "Abdominal Ultrasound",
+          "category": "Radiology",
+          "description": "Visualizes abdominal organs to assess for stones, tumors, or cysts.",
+          "price": 5500,
+          "centers": ["Colombo Imaging Center", "Jaffna Health Lab", "Kandy Medical Center"],
+          "body_part": ["Abdomen"]
+        },
+        {
+          "test_name": "Carotid Doppler",
+          "category": "Cardiology",
+          "description": "Ultrasound imaging of carotid arteries to detect blockages or clots.",
+          "price": 9500,
+          "centers": ["Colombo Central Lab", "Matara Medical Hub", "Galle Diagnostic Services"],
+          "body_part": ["Neck"]
+        },
+        {
+          "test_name": "Lower Extremity Venous Doppler",
+          "category": "Vascular",
+          "description": "Assesses veins in legs for clots and blood flow issues.",
+          "price": 7800,
+          "centers": ["Colombo Imaging Center", "Galle Diagnostic Services", "Matara Medical Hub"],
+          "body_part": ["Leg"]
+        },
+        {
+          "test_name": "Upper GI Endoscopy",
+          "category": "Gastroenterology",
+          "description": "Visualizes esophagus, stomach, and duodenum for abnormalities.",
+          "price": 9500,
+          "centers": ["Colombo Central Lab", "Kandy Diagnostic Services", "Jaffna Health Lab"],
+          "body_part": ["Stomach"]
+        },
+        {
+          "test_name": "Thyroid Ultrasound",
+          "category": "Endocrinology",
+          "description": "Imaging of thyroid gland to detect nodules or enlargement.",
+          "price": 7000,
+          "centers": ["Kandy Medical Hub", "Matara Health Diagnostics", "Galle Diagnostic Services"],
+          "body_part": ["Thyroid"]
+        },
+        {
+          "test_name": "Pelvic MRI",
+          "category": "Radiology",
+          "description": "High-resolution MRI for detailed pelvic structure analysis.",
+          "price": 17000,
+          "centers": ["Colombo Medical Center", "Kandy Imaging Center", "Matara Health Diagnostics"],
+          "body_part": ["Pelvis"]
+        },
+        {
+          "test_name": "Brain CT Scan",
+          "category": "Neurology",
+          "description": "CT imaging to detect strokes, tumors, and other brain issues.",
+          "price": 14000,
+          "centers": ["Colombo Imaging Center", "Galle Diagnostic Services", "Jaffna Imaging Services"],
+          "body_part": ["Brain"]
+        },
+        {
+          "test_name": "Spinal MRI",
+          "category": "Orthopedics",
+          "description": "Detailed MRI imaging of the spine to assess spinal disorders.",
+          "price": 16000,
+          "centers": ["Kandy Medical Center", "Colombo Central Lab", "Galle Diagnostic Services"],
+          "body_part": ["Spine"]
+        },
+        {
+          "test_name": "Cardiac CT",
+          "category": "Cardiology",
+          "description": "CT imaging of the heart for coronary artery disease detection.",
+          "price": 18000,
+          "centers": ["Colombo Medical Center", "Matara Medical Hub", "Jaffna Imaging Services"],
+          "body_part": ["Heart"]
+        },
+        {
+          "test_name": "Eye OCT",
+          "category": "Ophthalmology",
+          "description": "Optical imaging to assess retinal layers for eye disease detection.",
+          "price": 6500,
+          "centers": ["Colombo Imaging Center", "Galle Diagnostic Services", "Jaffna Health Lab"],
+          "body_part": ["Eye"]
         }
       ]
       

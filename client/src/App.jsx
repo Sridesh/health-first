@@ -5,6 +5,8 @@ import Root from "./pages/Root/Root";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import LabServices from "./pages/LabServices/LabServices";
 import AllServices from "./pages/AllServices/AllServices";
+import ScansPage from "./pages/ScansPage/ScansPage";
+import Products from "./pages/Products/Products";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: "/services/lab-services",
         element: <LabServices />,
+      },
+      {
+        path: "/services/scans",
+        element: <ScansPage />,
+      },
+      {
+        path: "/services/medical-products",
+        element: <Products />,
       },
     ],
   },
