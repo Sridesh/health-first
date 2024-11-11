@@ -1,15 +1,20 @@
+require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
-const routes = require("./routes/api");
+const mainRouter = require("./mainRouter");
 
+const port = process.env.PORT;
 const app = express();
 
 //middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 //routes
-app.use(routes);
+// app.use(routes);
 
+//newRoutes
+app.use("/", mainRouter);
+
+// next middle wear - error handling
 app.use(function (err, req, res, next) {
   res.send({
     error: {
@@ -18,6 +23,6 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(3000, function () {
-  console.log("Server up and running on port 3000");
+app.listen(port, function () {
+  console.log(`Server up and running on port ${port}`);
 });
