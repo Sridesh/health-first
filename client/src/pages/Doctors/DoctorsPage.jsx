@@ -8,10 +8,14 @@ import { Box, Pagination } from "@mui/material";
 import GridView from "../../components/GridView/GridView";
 import GridLoader from "../../components/GridView/GridLoader";
 import Header from "../../components/Header/Header";
+import FilterContainer from "../../components/FilterContainer/FilterContainer";
 
 function DoctorsPage() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [filters, setFilters] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState(null);
 
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
@@ -21,9 +25,26 @@ function DoctorsPage() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/doctor");
+        const response = await axios.get(
+          `http://localhost:3001/doctor/get-doctors?order=name&sort=asc&filter=${selectedFilter}`
+        );
         setData(response.data);
         setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetch();
+  }, [selectedFilter]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/doctor/get-doctor-types"
+        );
+        setFilters(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -49,6 +70,11 @@ function DoctorsPage() {
         }
       />
       <Box className={styles["container_grid-container"]}>
+        <FilterContainer
+          setFilter={setSelectedFilter}
+          filterNames={["Category"]}
+          filterValues={[filters]}
+        />
         {isLoading ? <GridLoader /> : <GridView data={pageData} />}
         <Pagination
           page={page}
