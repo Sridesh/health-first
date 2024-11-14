@@ -7,6 +7,8 @@ import { Box, Grid2 } from "@mui/material";
 import Card from "../Card/Card";
 
 function GridView({ data }) {
+  console.log(data);
+
   return (
     <Box className={styles["container"]}>
       <Grid2 container sx={{ width: "100%" }} spacing={4}>
@@ -25,7 +27,7 @@ function GridView({ data }) {
   );
 }
 
-GridView.protoTypes = {
+GridView.propTypes = {
   data: PropTypes.array,
 };
 
