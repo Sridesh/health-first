@@ -44,7 +44,9 @@ function Card({ data }) {
       >
         <Chip
           label={
-            data.availability ? "Booking available" : "Booking unavailable"
+            data.availability
+              ? "Channelling available"
+              : "Channelling unavailable"
           }
           color="success"
           sx={{
@@ -69,15 +71,15 @@ function Card({ data }) {
             color: theme.palette.gray.main,
           }}
         >
-          {data.status + " " + data.name}
+          {data.first_name + " " + data.last_name}
         </Typography>
         <Typography sx={{ color: theme.palette.teal.main, fontSize: "80%" }}>
-          {data.specialisation}
+          {data.category_name}
         </Typography>
         <Typography
           sx={{ color: theme.palette.light_gray.main, fontSize: "70%" }}
         >
-          {data.qualification}
+          {data.description}
         </Typography>
       </Stack>
       <Button

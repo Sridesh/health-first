@@ -21,7 +21,7 @@ function DoctorsPage() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/doctors");
+        const response = await axios.get("http://localhost:3001/doctor");
         setData(response.data);
         setIsLoading(false);
       } catch (error) {

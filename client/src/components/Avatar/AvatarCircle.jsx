@@ -48,6 +48,7 @@ function AvatarCircle({ name, size, textSize }) {
 AvatarCircle.propTypes = {
   name: PropTypes.string,
   size: PropTypes.string,
+  textSize: PropTypes.string || PropTypes.number,
 };
 
 export default AvatarCircle;
