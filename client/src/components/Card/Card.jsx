@@ -32,7 +32,6 @@ function Card({ data }) {
         sx={{
           backgroundImage: `url(${image})`,
           backgroundSize: "cover",
-          //   bgcolor: "black",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           width: "100%",

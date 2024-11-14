@@ -17,10 +17,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import FilterContainer from "../FilterContainer/FilterContainer";
 
 function ServiceList({ data }) {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -101,35 +100,7 @@ function ServiceList({ data }) {
         >
           Select a service
         </Typography>
-        <Stack
-          direction={"row"}
-          justifyContent={"space-between"}
-          sx={{ width: "50%" }}
-        >
-          <Button>
-            <Stack
-              direction={"row"}
-              spacing={1}
-              sx={{ color: theme.palette.gray.main }}
-            >
-              <FilterAltOutlinedIcon />
-              <Typography>Filter</Typography>
-            </Stack>
-          </Button>
-          <Divider orientation="vertical" variant="middle" flexItem />
-
-          <Button>
-            <Stack
-              direction={"row"}
-              spacing={1}
-              sx={{ color: theme.palette.gray.main }}
-            >
-              <SwapVertOutlinedIcon />
-              <Typography>Sort</Typography>
-            </Stack>
-          </Button>
-        </Stack>
-        <Divider sx={{ width: "80%", my: "10px" }} />
+        <FilterContainer />
         {pageData.length > 0
           ? pageData.map((item) => (
               <>
