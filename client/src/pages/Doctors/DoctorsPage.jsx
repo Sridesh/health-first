@@ -16,6 +16,11 @@ function DoctorsPage() {
 
   const [filters, setFilters] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedSort, setSelectedSort] = useState({
+    order: "first_name",
+    sort: "asc",
+  });
+  const [searchString, setSearchString] = useState("");
 
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
@@ -24,10 +29,11 @@ function DoctorsPage() {
 
   useEffect(() => {
     const fetch = async () => {
+      const url = `http://localhost:3001/doctor/get-doctors?filter=${selectedFilter}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
+      console.log(url);
+
       try {
-        const response = await axios.get(
-          `http://localhost:3001/doctor/get-doctors?order=name&sort=asc&filter=${selectedFilter}`
-        );
+        const response = await axios.get(url);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -36,7 +42,7 @@ function DoctorsPage() {
     };
 
     fetch();
-  }, [selectedFilter]);
+  }, [selectedFilter, selectedSort.order, selectedSort.sort]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -54,8 +60,25 @@ function DoctorsPage() {
   }, []);
 
   useEffect(() => {
-    setPageData(data.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE));
-  }, [data, page]);
+    console.log(searchString);
+
+    if (searchString !== "") {
+      const tempData = data.filter((item) =>
+        item.first_name.toLowerCase().includes(searchString.toLowerCase())
+      );
+      console.log(tempData);
+
+      setPageData(
+        tempData.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE)
+      );
+    } else {
+      setPageData(
+        data.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE)
+      );
+    }
+  }, [data, page, searchString]);
+
+  useEffect;
 
   const handleChange = (e, value) => {
     setPage(value);
@@ -68,12 +91,27 @@ function DoctorsPage() {
         description={
           "Discover our team of compassionate and skilled doctors, ready to provide the highest standard of care. Browse specialties, view profiles, and find the perfect match for your healthcare needs. From expert consultations to personalized treatment, our doctors are here to support you on your wellness journey."
         }
+        onChange={setSearchString}
       />
       <Box className={styles["container_grid-container"]}>
         <FilterContainer
+          filters={[selectedFilter]}
           setFilter={setSelectedFilter}
           filterNames={["Category"]}
           filterValues={[filters]}
+          sortOptions={[
+            {
+              option: "Name",
+              values: ["Ascending", "Descending"],
+              columnName: "first_name",
+            },
+          ]}
+          getSort={setSelectedSort}
+          defaultSort={{
+            option: "Name",
+            values: ["Ascending", "Descending"],
+            columnName: "first_name",
+          }}
         />
         {isLoading ? <GridLoader /> : <GridView data={pageData} />}
         <Pagination

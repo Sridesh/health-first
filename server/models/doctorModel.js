@@ -1,7 +1,7 @@
 const pool = require("../config/db");
 
 const validOrders = ["first_name", "last_name"];
-const validSorts = ["ASC", "DESC"];
+const validSorts = ["ASC", "DESC", "asc", "desc"];
 
 //--------return doctors
 const getAllDoctors = async (order, sort, filter) => {

@@ -24,8 +24,9 @@ function Header({ heading, onChange, description }) {
   const [open, setOpen] = useState(false);
 
   const handleChange = (event) => {
-    onChange(event);
+    onChange(event.target.value);
   };
+
   return (
     <Box
       className={styles["header"]}
@@ -96,6 +97,7 @@ Header.propTypes = {
   heading: PropTypes.string,
   onChange: PropTypes.func,
   description: PropTypes.string,
+  getSearchString: PropTypes.func,
 };
 
 export default Header;
