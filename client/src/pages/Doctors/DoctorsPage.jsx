@@ -95,6 +95,7 @@ function DoctorsPage() {
       />
       <Box className={styles["container_grid-container"]}>
         <FilterContainer
+          isSingleFilter={true}
           filters={[selectedFilter]}
           setFilter={setSelectedFilter}
           filterNames={["Category"]}

@@ -21,6 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
 function FilterContainer({
+  isSingleFilter,
   filters,
   filterNames,
   filterValues,
@@ -53,13 +54,13 @@ function FilterContainer({
   };
 
   const handleFilterSelect = (filter) => {
-    setFilter(filter);
+    if (isSingleFilter) setFilter(filter);
+    else setFilter((prev) => [...prev, filter]);
   };
 
   const handleSortSelect = (sort, name) => {
     getSort(sort);
     setSelectedSort(name);
-    console.log(name);
   };
 
   const closeCollapse = () => {
@@ -67,13 +68,10 @@ function FilterContainer({
   };
 
   const handleRemoveFilter = (filter) => {
-    // setFilter((prev) => {
-    //   if (typeof prev === string) {
-    //     setFilter(null);
-    //   } else setFilter((prev) => prev.filter((item) => item !== filter));
-    // });
-
-    setFilter(null);
+    if (isSingleFilter) setFilter(null);
+    else {
+      setFilter((prev) => prev.filter((item) => item !== filter));
+    }
   };
 
   const handleRemoveSort = () => {
@@ -249,6 +247,7 @@ function FilterContainer({
 }
 
 FilterContainer.propTypes = {
+  isSingleFilter: PropTypes.bool,
   filters: PropTypes.array,
   setFilter: PropTypes.func,
   filterNames: PropTypes.array,
