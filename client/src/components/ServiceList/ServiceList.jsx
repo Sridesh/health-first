@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
 
 import styles from "./ServiceList.module.css";
 import { theme } from "../../theme";
@@ -19,7 +18,6 @@ import {
 
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
-import FilterContainer from "../FilterContainer/FilterContainer";
 
 function ServiceList({ data }) {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -100,9 +98,6 @@ function ServiceList({ data }) {
         >
           Select a service
         </Typography>
-        {/* <FilterContainer 
-        
-        /> */}
         {pageData.length > 0
           ? pageData.map((item) => (
               <>
@@ -205,7 +200,6 @@ function ServiceList({ data }) {
                     sx={{ color: theme.palette.gray.main, mb: "5px" }}
                   >
                     <FmdGoodOutlinedIcon />
-
                     <Typography>{center}</Typography>
                   </Stack>
                 );

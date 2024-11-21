@@ -42,7 +42,7 @@ function DoctorsPage() {
     };
 
     fetch();
-  }, [selectedFilter, selectedSort.order, selectedSort.sort]);
+  }, [selectedFilter, selectedSort]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -60,13 +60,10 @@ function DoctorsPage() {
   }, []);
 
   useEffect(() => {
-    console.log(searchString);
-
     if (searchString !== "") {
       const tempData = data.filter((item) =>
         item.first_name.toLowerCase().includes(searchString.toLowerCase())
       );
-      console.log(tempData);
 
       setPageData(
         tempData.slice((page - 1) * CARDS_PER_PAGE, page * CARDS_PER_PAGE)
@@ -96,9 +93,9 @@ function DoctorsPage() {
       <Box className={styles["container_grid-container"]}>
         <FilterContainer
           isSingleFilter={true}
-          filters={[selectedFilter]}
+          filters={selectedFilter}
           setFilter={setSelectedFilter}
-          filterNames={["Category"]}
+          filterNames={["Specialization"]}
           filterValues={[filters]}
           sortOptions={[
             {
