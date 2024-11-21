@@ -48,7 +48,7 @@ function ServiceList({ data }) {
     <Box className={styles["element"]} sx={{ width: { xs: "80%", sm: "70%" } }}>
       <Box>
         <Typography sx={{ color: theme.palette.black.main, fontWeight: 500 }}>
-          {data?.test_name}
+          {data?.name}
         </Typography>
         <Typography sx={{ fontSize: "90%", color: theme.palette.teal.main }}>
           {data?.category}
@@ -100,7 +100,7 @@ function ServiceList({ data }) {
         >
           Select a service
         </Typography>
-        <FilterContainer />
+        {/* <FilterContainer /> */}
         {pageData.length > 0
           ? pageData.map((item) => (
               <>
@@ -157,7 +157,7 @@ function ServiceList({ data }) {
                 variant="h6"
                 sx={{ color: theme.palette.black.main, fontWeight: 500 }}
               >
-                {selectedItem?.test_name}
+                {selectedItem?.name}
               </Typography>
               <Typography sx={{ color: theme.palette.teal.main }}>
                 {selectedItem?.category}

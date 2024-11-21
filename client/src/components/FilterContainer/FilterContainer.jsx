@@ -7,6 +7,7 @@ import styles from "./FilterContainer.module.css";
 import {
   Box,
   Button,
+  Chip,
   Collapse,
   Divider,
   MenuItem,
@@ -17,26 +18,30 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
-function FilterContainer({ filterNames, filterValues, setFilter, openSort }) {
-  const [selectedOption, setSelectedOption] = useState("filter");
+function FilterContainer({
+  filters,
+  filterNames,
+  filterValues,
+  setFilter,
+  sortOptions,
+  getSort,
+  defaultSort,
+}) {
+  const [selectedOption, setSelectedOption] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [selectedSort, setSelectedSort] = useState("");
 
   const handleFilterClick = () => {
     setSelectedOption("filter");
-    setOpen(!open);
+    setOpen(true);
   };
 
   const handleSortClick = () => {
     setSelectedOption("sort");
-    setOpen(!open);
-    openSort();
-  };
-
-  const handleClose = () => {
-    setOpen(!open);
-    setSelectedOption(null);
+    setOpen(true);
   };
 
   const handleSelect = (filter) => {
@@ -49,7 +54,31 @@ function FilterContainer({ filterNames, filterValues, setFilter, openSort }) {
 
   const handleFilterSelect = (filter) => {
     setFilter(filter);
+  };
+
+  const handleSortSelect = (sort, name) => {
+    getSort(sort);
+    setSelectedSort(name);
+    console.log(name);
+  };
+
+  const closeCollapse = () => {
     setOpen(false);
+  };
+
+  const handleRemoveFilter = (filter) => {
+    // setFilter((prev) => {
+    //   if (typeof prev === string) {
+    //     setFilter(null);
+    //   } else setFilter((prev) => prev.filter((item) => item !== filter));
+    // });
+
+    setFilter(null);
+  };
+
+  const handleRemoveSort = () => {
+    getSort(defaultSort);
+    setSelectedSort("");
   };
 
   return (
@@ -61,6 +90,7 @@ function FilterContainer({ filterNames, filterValues, setFilter, openSort }) {
         alignItems: "center",
         flexDirection: "column",
         mb: "10px",
+        position: "relative",
       }}
     >
       <Stack
@@ -68,73 +98,150 @@ function FilterContainer({ filterNames, filterValues, setFilter, openSort }) {
         justifyContent={"space-between"}
         sx={{ width: "50%" }}
       >
-        <Button onClick={handleFilterClick}>
-          <Stack
-            direction={"row"}
-            spacing={1}
-            sx={{ color: theme.palette.gray.main }}
-          >
-            <FilterAltOutlinedIcon />
-            <Typography>Filter</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Button onClick={handleFilterClick} sx={{ width: "fit-content" }}>
+            <Stack
+              direction={"row"}
+              spacing={1}
+              sx={{ color: theme.palette.gray.main }}
+            >
+              <FilterAltOutlinedIcon />
+              <Typography>Filter</Typography>
+            </Stack>
+          </Button>
+          <Stack direction="row" spacing={1}>
+            {filters[0] !== null &&
+              filters?.map((item, index) => (
+                <Chip
+                  sx={{
+                    bgcolor: theme.palette.blue.main,
+                    color: theme.palette.teal.main,
+                  }}
+                  label={item}
+                  key={index}
+                  onDelete={() => handleRemoveFilter(item)}
+                />
+              ))}
           </Stack>
-        </Button>
+        </Box>
         <Divider orientation="vertical" variant="middle" flexItem />
-
-        <Button onClick={handleSortClick}>
-          <Stack
-            direction={"row"}
-            spacing={1}
-            sx={{ color: theme.palette.gray.main }}
-          >
-            <SwapVertOutlinedIcon />
-            <Typography>Sort</Typography>
-          </Stack>
-        </Button>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Button onClick={handleSortClick}>
+            <Stack
+              direction={"row"}
+              spacing={1}
+              sx={{ color: theme.palette.gray.main }}
+            >
+              <SwapVertOutlinedIcon />
+              <Typography>Sort</Typography>
+            </Stack>
+          </Button>
+          {selectedSort !== "" && (
+            <Chip
+              sx={{
+                bgcolor: theme.palette.yellow.main,
+                color: theme.palette.teal.main,
+              }}
+              label={selectedSort}
+              onDelete={handleRemoveSort}
+            />
+          )}
+        </Box>
       </Stack>
       <Divider sx={{ width: "80%", my: "10px" }} />
       <Collapse
         in={open}
-        onClose={handleClose}
         orientation="vertical"
-        sx={{ width: "80%" }}
+        sx={{ width: "80%", position: "absolute", top: 50, zIndex: 1 }}
       >
-        <Box className={styles["filter-container"]}>
-          <Typography sx={{ fontSize: "110%", mb: "10px" }}>
-            Filter By:
-          </Typography>
-          {filterNames?.map((item, index) => (
-            <Box key={index} className={styles["filter"]}>
-              <Stack
-                direction={"row"}
-                spacing={1}
-                className={styles["filter_heading"]}
-                onClick={() => handleSelect(item)}
-                sx={{ color: theme.palette.teal.main }}
-              >
-                {selectedFilters.includes(item) ? (
-                  <ExpandMoreIcon />
-                ) : (
-                  <ChevronRightIcon />
-                )}
-                <Typography>{item}</Typography>
-              </Stack>
-              <Collapse
-                in={selectedFilters.includes(item)}
-                orientation="vertical"
-                sx={{ ml: "10px", maxHeight: "200px", overflowY: "auto" }}
-              >
-                {filterValues[index]?.map((filter, index2) => (
-                  <MenuItem
-                    key={index2}
-                    sx={{ color: theme.palette.sky_blue.main }}
-                    onClick={() => handleFilterSelect(filter)}
-                  >
-                    <li>{filter}</li>
-                  </MenuItem>
-                ))}
-              </Collapse>
-            </Box>
-          ))}
+        {selectedOption === "filter" && (
+          <Box className={styles["filter-container"]}>
+            <Typography sx={{ fontSize: "110%", mb: "10px" }}>
+              Filter By:
+            </Typography>
+            {filterNames?.map((item, index) => (
+              <Box key={index} className={styles["filter"]}>
+                <Stack
+                  direction={"row"}
+                  spacing={1}
+                  className={styles["filter_heading"]}
+                  onClick={() => handleSelect(item)}
+                  sx={{ color: theme.palette.teal.main }}
+                >
+                  {selectedFilters.includes(item) ? (
+                    <ExpandMoreIcon />
+                  ) : (
+                    <ChevronRightIcon />
+                  )}
+                  <Typography>{item}</Typography>
+                </Stack>
+                <Collapse
+                  in={selectedFilters.includes(item)}
+                  orientation="vertical"
+                  sx={{ ml: "10px", maxHeight: "200px", overflowY: "auto" }}
+                >
+                  {filterValues[index]?.map((filter, index2) => (
+                    <MenuItem
+                      key={index2}
+                      sx={{ color: theme.palette.sky_blue.main }}
+                      onClick={() => handleFilterSelect(filter)}
+                    >
+                      <li>{filter}</li>
+                    </MenuItem>
+                  ))}
+                </Collapse>
+              </Box>
+            ))}
+          </Box>
+        )}
+        {selectedOption === "sort" && (
+          <Box className={styles["filter-container"]}>
+            <Typography sx={{ fontSize: "110%", mb: "10px" }}>
+              Sort By:
+            </Typography>
+            {sortOptions?.map((option, index) => {
+              return (
+                <>
+                  {option?.values?.map((value, index2) => {
+                    return (
+                      <MenuItem
+                        key={index + "." + index2}
+                        sx={{ color: theme.palette.sky_blue.main }}
+                        onClick={() =>
+                          handleSortSelect(
+                            {
+                              order: option.columnName,
+                              sort: value === "Ascending" ? "asc" : "desc",
+                            },
+                            option.option + " - " + value
+                          )
+                        }
+                      >
+                        <li>{option.option + " - " + value}</li>
+                      </MenuItem>
+                    );
+                  })}
+                </>
+              );
+            })}
+          </Box>
+        )}
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+          <Button
+            sx={{ width: "100%", bgcolor: theme.palette.blue.main }}
+            onClick={closeCollapse}
+            variant="contained"
+          >
+            <KeyboardDoubleArrowUpIcon
+              sx={{ color: theme.palette.teal.main }}
+            />
+          </Button>
         </Box>
       </Collapse>
     </Box>
@@ -142,10 +249,13 @@ function FilterContainer({ filterNames, filterValues, setFilter, openSort }) {
 }
 
 FilterContainer.propTypes = {
+  filters: PropTypes.array,
   setFilter: PropTypes.func,
-  openSort: PropTypes.func,
   filterNames: PropTypes.array,
   filterValues: PropTypes.array,
+  sortOptions: PropTypes.array,
+  getSort: PropTypes.array,
+  defaultSort: PropTypes.object,
 };
 
 export default FilterContainer;

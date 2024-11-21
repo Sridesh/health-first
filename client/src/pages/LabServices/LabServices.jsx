@@ -41,7 +41,11 @@ function LabServices() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/labs");
+        const response = await axios.get(
+          `http://localhost:3001/test/get-medi-tests`
+        );
+        console.log(response.data);
+
         setData(response.data);
       } catch (error) {
         console.log(error);
