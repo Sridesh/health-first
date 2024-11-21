@@ -12,6 +12,7 @@ import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 
 import Header from "../../components/Header/Header";
 import ServiceList from "../../components/ServiceList/ServiceList";
+import FilterContainer from "../../components/FilterContainer/FilterContainer";
 
 const Option = ({ icon, text }) => (
   <Box
@@ -38,13 +39,18 @@ const Option = ({ icon, text }) => (
 function LabServices() {
   const [data, setData] = useState([]);
 
+  const [selectedFilters, setSelectedFilters] = useState(null);
+  const [selectedSort, setSelectedSort] = useState({
+    order: "first_name",
+    sort: "asc",
+  });
+  const [searchString, setSearchString] = useState("");
+
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3001/test/get-medi-tests`
-        );
-        console.log(response.data);
+        const url = `http://localhost:3001/test/get-medi-tests?filter=${selectedFilters}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
+        const response = await axios.get(url);
 
         setData(response.data);
       } catch (error) {
@@ -53,7 +59,8 @@ function LabServices() {
     };
 
     fetch();
-  }, []);
+  }, [selectedFilters, selectedSort]);
+
   return (
     <Box className={styles["container"]}>
       <Header
@@ -61,6 +68,7 @@ function LabServices() {
         description={
           "Access a full range of diagnostic lab services, designed to provide fast and accurate results. From routine tests to specialized screenings, our state-of-the-art labs are equipped to meet your health needs. Easily schedule tests, view results, and trust in our commitment to precision and care at every step of your health journey"
         }
+        onChange={setSearchString}
       />
       <Stack
         direction={"row"}
@@ -83,7 +91,32 @@ function LabServices() {
           icon={<GradingOutlinedIcon sx={{ fontSize: "70px" }} />}
         />
       </Stack>
-      <ServiceList data={data} />
+      <FilterContainer
+        isSingleFilter={true}
+        filters={selectedFilters}
+        setFilter={setSelectedFilters}
+        filterNames={["Category"]}
+        filterValues={[[...new Set(data.map((test) => test.type))]]}
+        getSort={setSelectedSort}
+        sortOptions={[
+          {
+            option: "Test Name",
+            values: ["Ascending", "Descending"],
+            columnName: "test_name",
+          },
+        ]}
+      />
+      <ServiceList
+        data={
+          searchString === ""
+            ? data
+            : data.filter((item) =>
+                item.test_name
+                  .toLowerCase()
+                  .includes(searchString.toLowerCase())
+              )
+        }
+      />
     </Box>
   );
 }

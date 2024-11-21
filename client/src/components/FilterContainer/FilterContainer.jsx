@@ -32,6 +32,7 @@ function FilterContainer({
 }) {
   const [selectedOption, setSelectedOption] = useState("");
   const [open, setOpen] = useState(false);
+
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [selectedSort, setSelectedSort] = useState("");
 
@@ -54,7 +55,7 @@ function FilterContainer({
   };
 
   const handleFilterSelect = (filter) => {
-    if (isSingleFilter) setFilter(filter);
+    if (isSingleFilter) setFilter(filter.replace(" ", "%20%"));
     else setFilter((prev) => [...prev, filter]);
   };
 
@@ -114,18 +115,30 @@ function FilterContainer({
             </Stack>
           </Button>
           <Stack direction="row" spacing={1}>
-            {filters[0] !== null &&
-              filters?.map((item, index) => (
-                <Chip
-                  sx={{
-                    bgcolor: theme.palette.blue.main,
-                    color: theme.palette.teal.main,
-                  }}
-                  label={item}
-                  key={index}
-                  onDelete={() => handleRemoveFilter(item)}
-                />
-              ))}
+            {isSingleFilter
+              ? filters && (
+                  <Chip
+                    sx={{
+                      bgcolor: theme.palette.blue.main,
+                      color: theme.palette.teal.main,
+                    }}
+                    label={filters}
+                    onDelete={() => handleRemoveFilter(filters)}
+                  />
+                )
+              : filters &&
+                filters[0] !== null &&
+                filters?.map((item, index) => (
+                  <Chip
+                    sx={{
+                      bgcolor: theme.palette.blue.main,
+                      color: theme.palette.teal.main,
+                    }}
+                    label={item}
+                    key={index}
+                    onDelete={() => handleRemoveFilter(item)}
+                  />
+                ))}
           </Stack>
         </Box>
         <Divider orientation="vertical" variant="middle" flexItem />
@@ -253,7 +266,7 @@ FilterContainer.propTypes = {
   filterNames: PropTypes.array,
   filterValues: PropTypes.array,
   sortOptions: PropTypes.array,
-  getSort: PropTypes.array,
+  getSort: PropTypes.func,
   defaultSort: PropTypes.object,
 };
 
