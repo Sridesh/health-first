@@ -48,10 +48,10 @@ function ServiceList({ data }) {
     <Box className={styles["element"]} sx={{ width: { xs: "80%", sm: "70%" } }}>
       <Box>
         <Typography sx={{ color: theme.palette.black.main, fontWeight: 500 }}>
-          {data?.name}
+          {data?.test_name}
         </Typography>
         <Typography sx={{ fontSize: "90%", color: theme.palette.teal.main }}>
-          {data?.category}
+          {data?.type}
         </Typography>
       </Box>
 
@@ -100,7 +100,9 @@ function ServiceList({ data }) {
         >
           Select a service
         </Typography>
-        {/* <FilterContainer /> */}
+        {/* <FilterContainer 
+        
+        /> */}
         {pageData.length > 0
           ? pageData.map((item) => (
               <>
@@ -157,10 +159,10 @@ function ServiceList({ data }) {
                 variant="h6"
                 sx={{ color: theme.palette.black.main, fontWeight: 500 }}
               >
-                {selectedItem?.name}
+                {selectedItem?.test_name}
               </Typography>
               <Typography sx={{ color: theme.palette.teal.main }}>
-                {selectedItem?.category}
+                {selectedItem?.type}
               </Typography>
             </Box>
             <Button
@@ -192,24 +194,22 @@ function ServiceList({ data }) {
               Available Centres
             </Typography>
             <Stack direction={"column"} spacing={1}>
-              {selectedItem?.centers?.map((center, index) => (
-                <Stack
-                  direction={"row"}
-                  spacing={1}
-                  key={index}
-                  sx={{ color: theme.palette.gray.main, mb: "5px" }}
-                >
-                  <FmdGoodOutlinedIcon />
-                  <NavLink
-                    target="_blank"
-                    to={
-                      "https://www.google.com/maps/dir//St.+Joseph's+College+Colombo,+214+T.+B.+Jayah+Mawatha,+Colombo+01000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3ae2591221ac30f3:0x390a25d82f47594d?sa=X&ved=1t:57443&ictx=111"
-                    }
+              {selectedItem?.centers?.map((center, index) => {
+                console.log(center);
+
+                return (
+                  <Stack
+                    direction={"row"}
+                    spacing={1}
+                    key={index}
+                    sx={{ color: theme.palette.gray.main, mb: "5px" }}
                   >
+                    <FmdGoodOutlinedIcon />
+
                     <Typography>{center}</Typography>
-                  </NavLink>
-                </Stack>
-              ))}
+                  </Stack>
+                );
+              })}
             </Stack>
           </Box>
         </Box>
