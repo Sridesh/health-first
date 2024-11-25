@@ -7,6 +7,8 @@ import LabServices from "./pages/LabServices/LabServices";
 import AllServices from "./pages/AllServices/AllServices";
 import ScansPage from "./pages/ScansPage/ScansPage";
 import Products from "./pages/Products/Products";
+import Checkups from "./pages/Checkups/Checkups";
+import Dev from "./dev";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
       {
         path: "/services/medical-products",
         element: <Products />,
+      },
+      {
+        path: "/services/health-checkups",
+        element: <Checkups />,
+      },
+      {
+        path: "/dev",
+        element: <Dev />,
       },
     ],
   },

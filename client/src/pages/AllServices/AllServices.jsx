@@ -31,13 +31,13 @@ const options = [
   {
     img_url: "https://img.icons8.com/3d-fluency/94/nurse-female--v2.png",
     title: "Health Checkups",
-    link: "health0-checkups",
+    link: "health-checkups",
     color: "rgba(1,137,171, 0.7)",
   },
 ];
 
 function AllServices() {
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
   const handleClick = (path) => {
