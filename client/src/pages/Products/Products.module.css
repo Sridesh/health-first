@@ -7,3 +7,14 @@
     justify-content: center;
 
 }
+
+.card {
+    border-radius: 10px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    background: white;
+    flex-grow: 1;
+    padding: 10px 0;
+}
