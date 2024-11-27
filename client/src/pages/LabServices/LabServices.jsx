@@ -44,6 +44,8 @@ function LabServices() {
     order: "first_name",
     sort: "asc",
   });
+
+  const [filterList, setFilterList] = useState([]);
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
@@ -60,6 +62,12 @@ function LabServices() {
 
     fetch();
   }, [selectedFilters, selectedSort]);
+
+  useEffect(() => {
+    const tempList = [...new Set(data.map((test) => test.type))];
+
+    if (tempList.length >= filterList) setFilterList(tempList);
+  }, [data, filterList]);
 
   return (
     <Box className={styles["container"]}>
@@ -96,7 +104,7 @@ function LabServices() {
         filters={selectedFilters}
         setFilter={setSelectedFilters}
         filterNames={["Category"]}
-        filterValues={[[...new Set(data.map((test) => test.type))]]}
+        filterValues={[filterList]}
         getSort={setSelectedSort}
         sortOptions={[
           {

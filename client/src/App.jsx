@@ -8,6 +8,8 @@ import AllServices from "./pages/AllServices/AllServices";
 import ScansPage from "./pages/ScansPage/ScansPage";
 import Products from "./pages/Products/Products";
 import Checkups from "./pages/Checkups/Checkups";
+import SignUp from "./pages/SignUp/SignUp";
+import SignIn from "./pages/SignIn/SignIn";
 import Dev from "./dev";
 
 const router = createBrowserRouter([
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
         element: <Dev />,
       },
     ],
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
   },
 ]);
 

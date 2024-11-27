@@ -1,5 +1,5 @@
 .container {
-    width: 100vw;
+    flex-grow: 1;
     height: 65px;
     background-color: white;
     position: relative;

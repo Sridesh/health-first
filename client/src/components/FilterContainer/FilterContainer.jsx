@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { theme } from "../../theme";
@@ -13,6 +13,7 @@ import {
   MenuItem,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
@@ -29,12 +30,31 @@ function FilterContainer({
   sortOptions,
   getSort,
   defaultSort,
+  sx,
 }) {
   const [selectedOption, setSelectedOption] = useState("");
   const [open, setOpen] = useState(false);
 
-  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [selectedFilterNames, setSelectedFilterNames] = useState([]);
+  const [selectedFilterValues, setSelectedFilterValues] = useState([]);
+  const [selectedSingleFilter, setSelectedSingleFilter] = useState(null);
   const [selectedSort, setSelectedSort] = useState("");
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    if (isSingleFilter) {
+      setFilter(
+        selectedSingleFilter
+          ? selectedSingleFilter.replaceAll(" ", "%20%")
+          : null
+      );
+    } else {
+      setFilter(
+        selectedFilterValues.map((filter) => filter.replaceAll(" ", "%20%"))
+      );
+    }
+  }, [isSingleFilter, selectedFilterValues, selectedSingleFilter, setFilter]);
 
   const handleFilterClick = () => {
     setSelectedOption("filter");
@@ -47,31 +67,60 @@ function FilterContainer({
   };
 
   const handleSelect = (filter) => {
-    if (selectedFilters.includes(filter)) {
-      setSelectedFilters((prev) => prev.filter((item) => item !== filter));
+    if (selectedFilterNames.includes(filter)) {
+      setSelectedFilterNames((prev) => prev.filter((item) => item !== filter));
     } else {
-      setSelectedFilters((prev) => [...prev, filter]);
+      setSelectedFilterNames((prev) => [...prev, filter]);
     }
   };
 
-  const handleFilterSelect = (filter) => {
-    if (isSingleFilter) setFilter(filter.replace(" ", "%20%"));
-    else setFilter((prev) => [...prev, filter]);
+  console.log(filters, typeof filters, selectedFilterValues);
+
+  const handleFilterSelect = (filter, filterName) => {
+    if (isSingleFilter) setSelectedSingleFilter(filter);
+    else {
+      if (selectedFilterValues.length === 0) {
+        setSelectedFilterValues([filter + "--" + filterName]);
+      } else {
+        const tempArray = [...selectedFilterValues];
+
+        const isIncluded = tempArray.some((item, index) => {
+          if (item.includes(filterName)) {
+            tempArray[index] = filter + "--" + filterName;
+            return true;
+          }
+          return false;
+        });
+
+        if (isIncluded) {
+          setSelectedFilterValues(tempArray);
+        } else {
+          setSelectedFilterValues((prev) => [
+            ...prev,
+            filter + "--" + filterName,
+          ]);
+        }
+      }
+    }
+
+    closeCollapse();
   };
 
   const handleSortSelect = (sort, name) => {
     getSort(sort);
     setSelectedSort(name);
+    closeCollapse();
   };
 
   const closeCollapse = () => {
     setOpen(false);
+    setSelectedOption("");
   };
 
   const handleRemoveFilter = (filter) => {
-    if (isSingleFilter) setFilter(null);
+    if (isSingleFilter) setSelectedSingleFilter(null);
     else {
-      setFilter((prev) => prev.filter((item) => item !== filter));
+      setSelectedFilterValues((prev) => prev.filter((item) => item !== filter));
     }
   };
 
@@ -90,18 +139,23 @@ function FilterContainer({
         flexDirection: "column",
         mb: "10px",
         position: "relative",
+        ...sx,
       }}
     >
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
-        sx={{ width: "50%" }}
+        sx={{ width: "85%" }}
       >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "center",
+            width: "50%",
+            maxWidth: "50%",
+            overflowX: "auto",
           }}
         >
           <Button onClick={handleFilterClick} sx={{ width: "fit-content" }}>
@@ -114,27 +168,35 @@ function FilterContainer({
               <Typography>Filter</Typography>
             </Stack>
           </Button>
-          <Stack direction="row" spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ width: "100%", overflowX: "auto", justifyContent: "center" }}
+          >
             {isSingleFilter
               ? filters && (
                   <Chip
                     sx={{
                       bgcolor: theme.palette.blue.main,
                       color: theme.palette.teal.main,
+                      fontSize: isMobile ? "70%" : "100%",
                     }}
-                    label={filters}
+                    label={
+                      filters !== null ? filters?.replaceAll("%20%", " ") : ""
+                    }
                     onDelete={() => handleRemoveFilter(filters)}
                   />
                 )
-              : filters &&
-                filters[0] !== null &&
-                filters?.map((item, index) => (
+              : selectedFilterValues &&
+                selectedFilterValues[0] !== null &&
+                selectedFilterValues?.map((item, index) => (
                   <Chip
                     sx={{
                       bgcolor: theme.palette.blue.main,
                       color: theme.palette.teal.main,
+                      fontSize: isMobile ? "70%" : "100%",
                     }}
-                    label={item}
+                    label={item.split("--")[0].replaceAll("%20%", " ")}
                     key={index}
                     onDelete={() => handleRemoveFilter(item)}
                   />
@@ -142,7 +204,17 @@ function FilterContainer({
           </Stack>
         </Box>
         <Divider orientation="vertical" variant="middle" flexItem />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "50%",
+            maxWidth: "50%",
+            overflowX: "auto",
+          }}
+        >
           <Button onClick={handleSortClick}>
             <Stack
               direction={"row"}
@@ -158,6 +230,7 @@ function FilterContainer({
               sx={{
                 bgcolor: theme.palette.yellow.main,
                 color: theme.palette.teal.main,
+                fontSize: isMobile ? "70%" : "100%",
               }}
               label={selectedSort}
               onDelete={handleRemoveSort}
@@ -176,24 +249,24 @@ function FilterContainer({
             <Typography sx={{ fontSize: "110%", mb: "10px" }}>
               Filter By:
             </Typography>
-            {filterNames?.map((item, index) => (
+            {filterNames?.map((filterName, index) => (
               <Box key={index} className={styles["filter"]}>
                 <Stack
                   direction={"row"}
                   spacing={1}
                   className={styles["filter_heading"]}
-                  onClick={() => handleSelect(item)}
+                  onClick={() => handleSelect(filterName)}
                   sx={{ color: theme.palette.teal.main }}
                 >
-                  {selectedFilters.includes(item) ? (
+                  {selectedFilterNames.includes(filterName) ? (
                     <ExpandMoreIcon />
                   ) : (
                     <ChevronRightIcon />
                   )}
-                  <Typography>{item}</Typography>
+                  <Typography>{filterName}</Typography>
                 </Stack>
                 <Collapse
-                  in={selectedFilters.includes(item)}
+                  in={selectedFilterNames.includes(filterName)}
                   orientation="vertical"
                   sx={{ ml: "10px", maxHeight: "200px", overflowY: "auto" }}
                 >
@@ -201,7 +274,7 @@ function FilterContainer({
                     <MenuItem
                       key={index2}
                       sx={{ color: theme.palette.sky_blue.main }}
-                      onClick={() => handleFilterSelect(filter)}
+                      onClick={() => handleFilterSelect(filter, filterName)}
                     >
                       <li>{filter}</li>
                     </MenuItem>
@@ -219,7 +292,9 @@ function FilterContainer({
             {sortOptions?.map((option, index) => {
               return (
                 <>
-                  {option?.values?.map((value, index2) => {
+                  {option?.values?.map((item, index2) => {
+                    let value = typeof item === "string" ? item : item.value;
+
                     return (
                       <MenuItem
                         key={index + "." + index2}
@@ -268,6 +343,7 @@ FilterContainer.propTypes = {
   sortOptions: PropTypes.array,
   getSort: PropTypes.func,
   defaultSort: PropTypes.object,
+  sx: PropTypes.object,
 };
 
 export default FilterContainer;

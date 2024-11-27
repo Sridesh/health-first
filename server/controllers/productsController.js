@@ -36,8 +36,17 @@ const s3 = new S3Client({
 
 //----------Controllers
 const getProductsList = async (req, res) => {
+  const { availability, category, sort, order } = req.query;
+
+  console.log(req.query);
+
   try {
-    const productList = await getAllProducts();
+    const productList = await getAllProducts(
+      availability,
+      category,
+      sort,
+      order
+    );
 
     for (const product of productList) {
       const getObjectParams = {
