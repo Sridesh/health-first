@@ -30,7 +30,6 @@ function DoctorsPage() {
   useEffect(() => {
     const fetch = async () => {
       const url = `http://localhost:3001/doctor/get-doctors?filter=${selectedFilter}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
-      console.log(url);
 
       try {
         const response = await axios.get(url);
@@ -74,8 +73,6 @@ function DoctorsPage() {
       );
     }
   }, [data, page, searchString]);
-
-  useEffect;
 
   const handleChange = (e, value) => {
     setPage(value);

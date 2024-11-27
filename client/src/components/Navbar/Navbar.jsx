@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -25,6 +25,7 @@ import { navbarOptions } from "../../data";
 
 function Navbar() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const navigate = useNavigate();
 
   const [openOptions, setOpenOptions] = useState(false);
   const [openOptionsBar, setOpenOptionsBar] = useState(false);
@@ -80,6 +81,7 @@ function Navbar() {
           component="img"
           alt="Company logo"
           src={logo}
+          onClick={() => navigate("/")}
         ></Box>
         {!isMobile ? (
           <OptionsBar />
