@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
+  Alert,
   Box,
   Button,
   IconButton,
@@ -17,6 +18,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./SignIn.module.css";
 import { theme } from "../../theme";
 import image from "/signup.jpg";
+import axios from "axios";
 
 function SignIn() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -28,11 +30,29 @@ function SignIn() {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const [isInvalid, setIsInvalid] = useState(false);
+
   const handleChange = (e) => {
+    setIsInvalid(false);
+
     setData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth-patient/login",
+        data
+      );
+      setIsInvalid(response.data.response === 1 ? false : true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -53,7 +73,12 @@ function SignIn() {
         <Typography color="primary" variant="h5" sx={{ my: "20px" }}>
           Sign In
         </Typography>
-        <form onSubmit={() => {}} style={{ width: "80%" }}>
+        {isInvalid && (
+          <Alert severity="error" sx={{ mb: "20px" }}>
+            Invalid email or password. Try again
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit} style={{ width: "80%" }}>
           <Stack
             direction={"column"}
             spacing={3}
