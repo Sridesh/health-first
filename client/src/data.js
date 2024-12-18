@@ -31,3 +31,9 @@ export const navbarOptions = [
     link: "contact",
   },
 ];
+
+export const regexStrings = {
+  onlyLetters: /^[A-Za-z]*$/,
+  onlyNumbers: /^[0-9]*$/,
+  emailFormat: /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/,
+};

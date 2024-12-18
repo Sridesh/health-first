@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { regexStrings } from "../../data";
 
 import {
   Box,
@@ -27,6 +28,8 @@ import image from "/signup.jpg";
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const { onlyLetters, onlyNumbers, emailFormat } = regexStrings;
+
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
@@ -37,15 +40,25 @@ function SignUp() {
     password: "",
   });
 
+  const [regexErrors, setRegexErrors] = useState([]);
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleChange = (e) => {
-    setData((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
+    if (e.target.name === "first_name" || e.target.name === "last_name") {
+      if (onlyLetters.test(e.target.value)) {
+        setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
+        setData((prev) => {
+          return {
+            ...prev,
+            [e.target.name]: e.target.value,
+          };
+        });
+      } else {
+        setRegexErrors((prev) => [...prev, e.target.name]);
+      }
+    }
+    else if
   };
 
   const handleSubmit = async (e) => {
@@ -96,6 +109,10 @@ function SignUp() {
               value={data.first_name}
               onChange={handleChange}
               required
+              helperText={
+                regexErrors.includes("first_name") ? "Only enter letters" : ""
+              }
+              error={regexErrors.includes("first_name")}
             />
             <TextField
               label="Last Name"
@@ -106,6 +123,10 @@ function SignUp() {
               value={data.last_name}
               onChange={handleChange}
               required
+              helperText={
+                regexErrors.includes("last_name") ? "Only enter letters" : ""
+              }
+              error={regexErrors.includes("last_name")}
             />
             <TextField
               label="Email"
@@ -138,27 +159,34 @@ function SignUp() {
               required
             />
 
-            <FormControl>
+            <FormControl sx={{ width: "50%" }}>
               <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="female"
                 name="radio-buttons-group"
+                sx={{ width: "100%" }}
               >
-                <FormControlLabel
-                  value="Male"
-                  name="gender"
-                  control={<Radio />}
-                  label="Male"
-                  onChange={handleChange}
-                />
-                <FormControlLabel
-                  value="Female"
-                  name="gender"
-                  control={<Radio />}
-                  label="Female"
-                  onChange={handleChange}
-                />
+                <Stack
+                  direction={"row"}
+                  sx={{ width: "100%" }}
+                  justifyContent={"space-around"}
+                >
+                  <FormControlLabel
+                    value="Male"
+                    name="gender"
+                    control={<Radio />}
+                    label="Male"
+                    onChange={handleChange}
+                  />
+                  <FormControlLabel
+                    value="Female"
+                    name="gender"
+                    control={<Radio />}
+                    label="Female"
+                    onChange={handleChange}
+                  />
+                </Stack>
               </RadioGroup>
             </FormControl>
 
