@@ -44,6 +44,8 @@ function SignUp() {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const [passwordStrength, setPasswordStrength] = useState(null);
+
   const handleChange = (e) => {
     if (e.target.name === "first_name" || e.target.name === "last_name") {
       if (onlyLetters.test(e.target.value)) {
@@ -57,8 +59,19 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
+    } else if (e.target.name === "phone_number") {
+      if (onlyNumbers.test(e.target.value)) {
+        setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
+        setData((prev) => {
+          return {
+            ...prev,
+            [e.target.name]: e.target.value,
+          };
+        });
+      } else {
+        setRegexErrors((prev) => [...prev, e.target.name]);
+      }
     }
-    else if
   };
 
   const handleSubmit = async (e) => {
@@ -95,7 +108,7 @@ function SignUp() {
         <form onSubmit={handleSubmit} style={{ width: "80%" }}>
           <Stack
             direction={"column"}
-            spacing={3}
+            spacing={2}
             sx={{ width: "100%" }}
             justifyContent={"center"}
             alignItems={"center"}
@@ -147,6 +160,10 @@ function SignUp() {
               value={data.phone_number}
               onChange={handleChange}
               required
+              helperText={
+                regexErrors.includes("phone_number") ? "Only enter numbers" : ""
+              }
+              error={regexErrors.includes("phone_number")}
             />
             <TextField
               label="NIC"
@@ -190,34 +207,71 @@ function SignUp() {
               </RadioGroup>
             </FormControl>
 
-            <TextField
-              label="Password"
-              type={isPasswordVisible ? "text" : "password"}
-              sx={{ width: "80%" }}
-              name="password"
-              size="small"
-              value={data.password}
-              onChange={handleChange}
-              required
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setIsPasswordVisible((prev) => !prev)}
-                      >
-                        {isPasswordVisible ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
+            <Stack direction={"row"} spacing={2} sx={{ width: "80%" }}>
+              <Box sx={{ flex: 1 }}>
+                <TextField
+                  label="Password"
+                  type={isPasswordVisible ? "text" : "password"}
+                  sx={{ width: "100%" }}
+                  name="password"
+                  size="small"
+                  value={data.password}
+                  onChange={handleChange}
+                  required
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() =>
+                              setIsPasswordVisible((prev) => !prev)
+                            }
+                          >
+                            {isPasswordVisible ? (
+                              <VisibilityIcon />
+                            ) : (
+                              <VisibilityOffIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+                <Stack
+                  direction={"row"}
+                  spacing={0.5}
+                  sx={{ flex: 1, mt: "10px" }}
+                >
+                  {[1, 2, 3, 4].map((item) => (
+                    <Box
+                      key={item}
+                      sx={{
+                        height: "5px",
+                        flex: 1,
+                        borderRadius: "50px",
+                        bgcolor: passwordStrength
+                          ? passwordStrength.color
+                          : "#999",
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+
+              <TextField
+                label="Confirm Password"
+                type={"password"}
+                sx={{ flex: 1 }}
+                name="confirm_password"
+                size="small"
+                value={data.password}
+                onChange={handleChange}
+                required
+              />
+            </Stack>
+
             <Button
               color="primary"
               type="submit"
