@@ -24,6 +24,7 @@ import axios from "axios";
 import styles from "./SignUp.module.css";
 import { theme } from "../../theme";
 import image from "/signup.jpg";
+import checkPassowrdStrength from "../../helpers/checkPasswordStrength";
 
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -71,6 +72,16 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
+    } else if (e.target.name === "password") {
+      console.log(checkPassowrdStrength(e.target.value));
+
+      setPasswordStrength(checkPassowrdStrength(e.target.value));
+      setData((prev) => {
+        return {
+          ...prev,
+          password: e.target.value,
+        };
+      });
     }
   };
 
@@ -248,12 +259,13 @@ function SignUp() {
                     <Box
                       key={item}
                       sx={{
-                        height: "5px",
+                        height: "4px",
                         flex: 1,
                         borderRadius: "50px",
-                        bgcolor: passwordStrength
-                          ? passwordStrength.color
-                          : "#999",
+                        bgcolor:
+                          item <= passwordStrength?.strength && passwordStrength
+                            ? passwordStrength.color
+                            : "#999",
                       }}
                     />
                   ))}
@@ -276,7 +288,7 @@ function SignUp() {
               color="primary"
               type="submit"
               variant="contained"
-              sx={{ width: "80%" }}
+              sx={{ width: "80%", mt: "30px" }}
             >
               Signin
             </Button>
