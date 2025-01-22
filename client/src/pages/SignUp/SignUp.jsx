@@ -24,6 +24,7 @@ import axios from "axios";
 import styles from "./SignUp.module.css";
 import { theme } from "../../theme";
 import image from "/signup.jpg";
+import checkPassowrdStrength from "../../helpers/checkPasswordStrength";
 
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,6 +40,7 @@ function SignUp() {
     nic: "",
     password: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [regexErrors, setRegexErrors] = useState([]);
 
@@ -47,6 +49,7 @@ function SignUp() {
   const [passwordStrength, setPasswordStrength] = useState(null);
 
   const handleChange = (e) => {
+    //first name & last name validation
     if (e.target.name === "first_name" || e.target.name === "last_name") {
       if (onlyLetters.test(e.target.value)) {
         setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
@@ -59,7 +62,10 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
-    } else if (e.target.name === "phone_number") {
+    }
+
+    //phone number validation
+    else if (e.target.name === "phone_number") {
       if (onlyNumbers.test(e.target.value)) {
         setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
         setData((prev) => {
@@ -71,6 +77,31 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
+    }
+
+    //password strength validation
+    else if (e.target.name === "password") {
+      console.log(checkPassowrdStrength(e.target.value));
+
+      setPasswordStrength(checkPassowrdStrength(e.target.value));
+      setData((prev) => {
+        return {
+          ...prev,
+          password: e.target.value,
+        };
+      });
+    }
+
+    //confirm password
+    else if (e.target.name === "confirm_password") {
+      setConfirmPassword(e.target.value);
+    } else {
+      setData((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
     }
   };
 
@@ -248,12 +279,13 @@ function SignUp() {
                     <Box
                       key={item}
                       sx={{
-                        height: "5px",
+                        height: "4px",
                         flex: 1,
                         borderRadius: "50px",
-                        bgcolor: passwordStrength
-                          ? passwordStrength.color
-                          : "#999",
+                        bgcolor:
+                          item <= passwordStrength?.strength && passwordStrength
+                            ? passwordStrength.color
+                            : "#999",
                       }}
                     />
                   ))}
@@ -266,7 +298,7 @@ function SignUp() {
                 sx={{ flex: 1 }}
                 name="confirm_password"
                 size="small"
-                value={data.password}
+                value={confirmPassword}
                 onChange={handleChange}
                 required
               />
@@ -276,7 +308,7 @@ function SignUp() {
               color="primary"
               type="submit"
               variant="contained"
-              sx={{ width: "80%" }}
+              sx={{ width: "80%", mt: "30px" }}
             >
               Signin
             </Button>

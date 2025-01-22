@@ -1,7 +1,7 @@
 export default function checkPassowrdStrength(password) {
   if (password === "") return null;
 
-  let index = 0;
+  let index = 1;
   if (/[A-Z]/.test(password) && /[a-z]/.test(password)) {
     index++;
   }
@@ -16,7 +16,14 @@ export default function checkPassowrdStrength(password) {
   }
 
   return {
-    strength:index,
-    color: 
-  }
+    strength: index,
+    color:
+      index <= 1
+        ? "red"
+        : index === 2
+        ? "orange"
+        : index === 3
+        ? "yellow"
+        : "green",
+  };
 }
