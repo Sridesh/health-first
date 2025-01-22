@@ -40,6 +40,7 @@ function SignUp() {
     nic: "",
     password: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [regexErrors, setRegexErrors] = useState([]);
 
@@ -48,6 +49,7 @@ function SignUp() {
   const [passwordStrength, setPasswordStrength] = useState(null);
 
   const handleChange = (e) => {
+    //first name & last name validation
     if (e.target.name === "first_name" || e.target.name === "last_name") {
       if (onlyLetters.test(e.target.value)) {
         setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
@@ -60,7 +62,10 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
-    } else if (e.target.name === "phone_number") {
+    }
+
+    //phone number validation
+    else if (e.target.name === "phone_number") {
       if (onlyNumbers.test(e.target.value)) {
         setRegexErrors((prev) => prev.filter((item) => item !== e.target.name));
         setData((prev) => {
@@ -72,7 +77,10 @@ function SignUp() {
       } else {
         setRegexErrors((prev) => [...prev, e.target.name]);
       }
-    } else if (e.target.name === "password") {
+    }
+
+    //password strength validation
+    else if (e.target.name === "password") {
       console.log(checkPassowrdStrength(e.target.value));
 
       setPasswordStrength(checkPassowrdStrength(e.target.value));
@@ -80,6 +88,18 @@ function SignUp() {
         return {
           ...prev,
           password: e.target.value,
+        };
+      });
+    }
+
+    //confirm password
+    else if (e.target.name === "confirm_password") {
+      setConfirmPassword(e.target.value);
+    } else {
+      setData((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
         };
       });
     }
@@ -278,7 +298,7 @@ function SignUp() {
                 sx={{ flex: 1 }}
                 name="confirm_password"
                 size="small"
-                value={data.password}
+                value={confirmPassword}
                 onChange={handleChange}
                 required
               />
