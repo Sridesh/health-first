@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { regexStrings } from "../../data";
 
 import {
   Box,
@@ -24,7 +23,11 @@ import axios from "axios";
 import styles from "./SignUp.module.css";
 import { theme } from "../../theme";
 import image from "/signup.jpg";
+
 import checkPassowrdStrength from "../../helpers/checkPasswordStrength";
+import { regexStrings } from "../../data";
+import { ValidateNICNumber } from "../../helpers/validateNICNumber";
+import CustomAlert from "../../components/Other/CustomAlert";
 
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -36,17 +39,25 @@ function SignUp() {
     last_name: "",
     email: "",
     phone_number: "",
-    gender: "Male",
+    gender: null,
     nic: "",
     password: "",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [regexErrors, setRegexErrors] = useState([]);
+  const [error, setError] = useState(null);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
   const [passwordStrength, setPasswordStrength] = useState(null);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError(null);
+      }, 4000);
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     //first name & last name validation
@@ -92,6 +103,16 @@ function SignUp() {
       });
     }
 
+    //Gender
+    else if (e.target.name === "gender") {
+      setData((prev) => {
+        return {
+          ...prev,
+          gender: e.target.value.toLowerCase(),
+        };
+      });
+    }
+
     //confirm password
     else if (e.target.name === "confirm_password") {
       setConfirmPassword(e.target.value);
@@ -105,16 +126,41 @@ function SignUp() {
     }
   };
 
+  const validateData = () => {
+    if (!emailFormat.test(data.email)) {
+      setError("Invalid Email Format");
+      return false;
+    } else if (data.phone_number.length < 10) {
+      setError("Phone number format incorrect");
+      return false;
+    } else if (!ValidateNICNumber(data.nic)) {
+      setError("Invalid ID Format");
+      return false;
+    } else if (!data.gender) {
+      setError("Please select a gender");
+      return false;
+    } else if (data.password !== confirmPassword) {
+      setError("Confirm password do not match");
+      return false;
+    } else if (passwordStrength.strength < 4) {
+      setError("Your password is too weak");
+      return false;
+    } else return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/auth-patient/register",
-        data
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+
+    if (validateData()) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/auth-patient/register",
+          data
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -322,6 +368,8 @@ function SignUp() {
           </Stack>
         </form>
       </Box>
+
+      <CustomAlert message={error} open={error !== null} severity={"error"} />
     </Box>
   );
 }
