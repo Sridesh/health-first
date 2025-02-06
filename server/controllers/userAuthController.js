@@ -1,10 +1,24 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-const { patientRegister, patientLogin } = require("../models/patientAuthModel");
+const { patientLogin, patientRegister } = require("../models/patientAuthModel");
 
 const userRegister = async (req, res) => {
   try {
-    const response = await patientRegister(req.body);
+    const user = await req.body.data;
+
+    const salt = await bcrypt.genSalt(12);
+    const hashed_password = await bcrypt.hash(user.password, salt);
+
+    const newUser = {
+      ...user,
+      first_name: user.first_name.toLowerCase(),
+      last_name: user.last_name.toLowerCase(),
+      email: user.email.toLowerCase(),
+      hashed_password: hashed_password,
+    };
+
+    const response = await patientRegister(newUser);
     res.status(200).json(response);
   } catch (error) {
     console.log(error);

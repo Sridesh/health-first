@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -28,6 +28,8 @@ import checkPassowrdStrength from "../../helpers/checkPasswordStrength";
 import { regexStrings } from "../../data";
 import { ValidateNICNumber } from "../../helpers/validateNICNumber";
 import CustomAlert from "../../components/Other/CustomAlert";
+import VerificationWindow from "../../components/VerificationWindow/VerificationWindow";
+import CustomBuffer from "../../components/UI/CustomBuffer";
 
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -44,12 +46,16 @@ function SignUp() {
     password: "",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const [regexErrors, setRegexErrors] = useState([]);
   const [error, setError] = useState(null);
+  const [isBuffering, setIsBuffering] = useState(false);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
@@ -92,8 +98,6 @@ function SignUp() {
 
     //password strength validation
     else if (e.target.name === "password") {
-      console.log(checkPassowrdStrength(e.target.value));
-
       setPasswordStrength(checkPassowrdStrength(e.target.value));
       setData((prev) => {
         return {
@@ -148,19 +152,41 @@ function SignUp() {
     } else return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitButtonClick = async (e) => {
     e.preventDefault();
 
     if (validateData()) {
+      setIsBuffering(true);
       try {
         const response = await axios.post(
-          "http://localhost:3001/auth-patient/register",
-          data
+          "http://localhost:3001/verification/set-otp",
+          { email: data.email }
         );
+        setIsVerifying(true);
         console.log(response);
       } catch (error) {
         console.log(error);
+        setError(error?.response?.data?.message);
+      } finally {
+        setIsBuffering(false);
       }
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/auth-patient/register",
+        {
+          data,
+        }
+      );
+      console.log(response);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -182,7 +208,7 @@ function SignUp() {
         <Typography color="primary" variant="h5" sx={{ mb: "20px" }}>
           Sign Up
         </Typography>
-        <form onSubmit={handleSubmit} style={{ width: "80%" }}>
+        <form onSubmit={handleSubmitButtonClick} style={{ width: "80%" }}>
           <Stack
             direction={"column"}
             spacing={2}
@@ -356,7 +382,7 @@ function SignUp() {
               variant="contained"
               sx={{ width: "80%", mt: "30px" }}
             >
-              Signin
+              Signup
             </Button>
 
             <Typography sx={{ fontSize: "80%", fontWeight: "bold" }}>
@@ -370,6 +396,17 @@ function SignUp() {
       </Box>
 
       <CustomAlert message={error} open={error !== null} severity={"error"} />
+
+      <VerificationWindow
+        open={isVerifying}
+        onCancel={() => {
+          setIsVerifying(false);
+        }}
+        onSuccess={handleSubmit}
+        email={data.email}
+      />
+
+      {isBuffering && <CustomBuffer />}
     </Box>
   );
 }

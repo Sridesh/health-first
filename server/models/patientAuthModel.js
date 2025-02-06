@@ -3,22 +3,22 @@ const pool = require("../config/db");
 const patientRegister = async (patient) => {
   try {
     const response = await pool.query(
-      `INSERT INTO patient (patient_uuid, first_name, last_name, email, gender, phone_number, nic, password)
-             VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7)`,
+      `INSERT INTO patient(patient_uuid, first_name, last_name, email, phone_number, gender, nic, hashed_password) 
+      VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7);`,
       [
         patient.first_name,
         patient.last_name,
         patient.email,
-        patient.gender,
         patient.phone_number,
+        patient.gender,
         patient.nic,
-        patient.password,
+        patient.hashed_password,
       ]
     );
 
-    console.log(response);
+    return { message: "Account created successfully" };
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
