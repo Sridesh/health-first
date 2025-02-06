@@ -7,4 +7,15 @@ const getAllPatients = async () => {
   return results.rows;
 };
 
-module.exports = { getAllPatients };
+const isUserExist = async (email) => {
+  const results = await pool.query(
+    `SELECT * FROM patient WHERE email = $1 LIMIT 1;`,
+    [email]
+  );
+
+  console.log(results.rowCount != 0);
+
+  return results.rowCount != 0;
+};
+
+module.exports = { getAllPatients, isUserExist };

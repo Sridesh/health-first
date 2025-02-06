@@ -11,6 +11,7 @@ import Checkups from "./pages/Checkups/Checkups";
 import SignUp from "./pages/SignUp/SignUp";
 import SignIn from "./pages/SignIn/SignIn";
 import Dev from "./dev";
+import Test from "./test";
 
 const router = createBrowserRouter([
   {
@@ -56,8 +57,12 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/signin",
+    path: "/login",
     element: <SignIn />,
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
 ]);
 
