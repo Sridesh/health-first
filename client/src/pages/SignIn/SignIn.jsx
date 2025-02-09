@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Alert,
@@ -18,7 +18,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import styles from "./SignIn.module.css";
 import { theme } from "../../theme";
 import image from "/signup.jpg";
-import axios from "axios";
+
+import { useAuth } from "../../hooks/useAuth";
 
 function SignIn() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -28,9 +29,13 @@ function SignIn() {
     password: "",
   });
 
+  const { login } = useAuth();
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const [isInvalid, setIsInvalid] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setIsInvalid(false);
@@ -45,11 +50,9 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/auth-patient/login",
-        data
-      );
-      setIsInvalid(response.data.response === 1 ? false : true);
+      await login(data.email, data.password);
+      navigate("/");
+      // setIsInvalid(response.data.response === 1 ? false : true);
     } catch (error) {
       console.log(error);
     }

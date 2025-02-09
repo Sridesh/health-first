@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const validator = require("validator");
 
 const getAllPatients = async () => {
   const results = await pool.query("SELECT * FROM patient");
@@ -7,15 +8,41 @@ const getAllPatients = async () => {
   return results.rows;
 };
 
-const isUserExist = async (email) => {
-  const results = await pool.query(
-    `SELECT * FROM patient WHERE email = $1 LIMIT 1;`,
-    [email]
-  );
+const getUserByEmail = async (email) => {
+  try {
+    if (!validator.isEmail(email)) {
+      return null;
+    }
 
-  console.log(results.rowCount != 0);
+    const results = await pool.query(
+      `SELECT * FROM patient WHERE email = $1 LIMIT 1;`,
+      [email]
+    );
 
-  return results.rowCount != 0;
+    const { rows } = results;
+
+    return rows[0] || null;
+  } catch (error) {
+    throw error;
+  }
 };
 
-module.exports = { getAllPatients, isUserExist };
+const getUserById = async (id) => {
+  try {
+    if (!validator.isUUID(id, [4])) {
+      return null;
+    }
+    const results = await pool.query(
+      `SELECT * FROM patient WHERE patient_uuid = $1 LIMIT 1;`,
+      [id]
+    );
+
+    const { rows } = results;
+
+    return rows[0] || null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { getAllPatients, getUserByEmail, getUserById };

@@ -16,13 +16,13 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import axios from "axios";
 
 import styles from "./Checkups.module.css";
 import { theme } from "../../theme";
 
 import Header from "../../components/Header/Header";
 import NoDataMessage from "../../components/NoDataMessage/NoDataMessage";
+import api from "../../api/api";
 
 function Checkups() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -39,19 +39,14 @@ function Checkups() {
 
   const categoriesSet = [...new Set(data.map((item) => item.category_name))];
 
-  console.log(categories);
-
   useEffect(() => {
     const fetch = async () => {
       try {
-        const url = `http://localhost:3001/checkups`;
-        const response = await axios.get(url);
+        const url = `/checkups`;
+        const response = await api.get(url);
         setData(response.data);
-        console.log(response.data);
 
-        const categoriesRes = await axios.get(
-          "http://localhost:3001/checkups/categories"
-        );
+        const categoriesRes = await api.get("/checkups/categories");
         setCategories(categoriesRes.data);
       } catch (error) {
         console.log(error);

@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 
 import DoctorsPage from "./pages/Doctors/DoctorsPage";
 import Root from "./pages/Root/Root";
@@ -12,11 +16,33 @@ import SignUp from "./pages/SignUp/SignUp";
 import SignIn from "./pages/SignIn/SignIn";
 import Dev from "./dev";
 import Test from "./test";
+import UnauthorizedScreen from "./components/UI/UnauthorizedScreen";
+import { AuthProvider } from "./context/AuthContext";
+import api from "./api/api";
+import CentersPage from "./pages/Centers/CentersPage";
+import { CartProvider } from "./context/CartContext";
+import Cart from "./pages/Cart/CartPage";
+import InvalidEnrty from "./pages/Redirects/InvalidEnrty";
+import PaymentPage from "./pages/Payment/PaymentPage";
+import ProtectedPayment from "./pages/Payment/ProtectedPayment";
+import { PaymentAccessProvider } from "./context/PaymentAccess";
+
+const protectedLoader = async () => {
+  try {
+    await api.get("auth-patient/me");
+    return null;
+  } catch (error) {
+    console.log(error);
+
+    return redirect("/login");
+  }
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    loader: protectedLoader,
     children: [
       {
         index: true,
@@ -29,6 +55,24 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <AllServices />,
+      },
+      {
+        path: "/centres",
+        element: <CentersPage />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/purchases-payment",
+        element: (
+          <ProtectedPayment>
+            <PaymentPage />,
+          </ProtectedPayment>
+        ),
+
+        // loader: paymentLoader,
       },
       {
         path: "/services/lab-services",
@@ -64,10 +108,26 @@ const router = createBrowserRouter([
     path: "/test",
     element: <Test />,
   },
+  {
+    path: "/unauthorized",
+    element: <UnauthorizedScreen />,
+  },
+  {
+    path: "/invalid-redirect",
+    element: <InvalidEnrty />,
+  },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <CartProvider>
+        <PaymentAccessProvider>
+          <RouterProvider router={router} />;
+        </PaymentAccessProvider>
+      </CartProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

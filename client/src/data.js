@@ -19,8 +19,8 @@ export const navbarOptions = [
     link: "services",
   },
   {
-    name: "Hospitals",
-    link: "hospitals",
+    name: "Centres",
+    link: "centres",
   },
   {
     name: "About",

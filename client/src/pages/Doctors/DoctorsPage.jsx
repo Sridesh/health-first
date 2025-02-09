@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 
 import styles from "./Doctors.module.css";
 
-import axios from "axios";
 import { Box, Pagination } from "@mui/material";
 
 import GridView from "../../components/GridView/GridView";
 import GridLoader from "../../components/GridView/GridLoader";
 import Header from "../../components/Header/Header";
 import FilterContainer from "../../components/FilterContainer/FilterContainer";
+import api from "../../api/api";
 
 function DoctorsPage() {
   const [data, setData] = useState([]);
@@ -29,10 +29,10 @@ function DoctorsPage() {
 
   useEffect(() => {
     const fetch = async () => {
-      const url = `http://localhost:3001/doctor/get-doctors?filter=${selectedFilter}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
+      const url = `/doctor/get-doctors?filter=${selectedFilter}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
 
       try {
-        const response = await axios.get(url);
+        const response = await api.get(url);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -46,9 +46,7 @@ function DoctorsPage() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3001/doctor/get-doctor-types"
-        );
+        const response = await api.get("/doctor/get-doctor-types");
         setFilters(response.data);
       } catch (error) {
         console.log(error);

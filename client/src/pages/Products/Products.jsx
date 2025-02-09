@@ -12,12 +12,15 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import axios from "axios";
 import tinycolor from "tinycolor2";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddShoppingCartRoundedIcon from "@mui/icons-material/AddShoppingCartRounded";
+import RemoveShoppingCartRoundedIcon from "@mui/icons-material/RemoveShoppingCartRounded";
 
 import Header from "../../components/Header/Header";
 import FilterContainer from "../../components/FilterContainer/FilterContainer";
+import api from "../../api/api";
+import { useCart } from "../../hooks/useCart";
+import PurchaseDrawer from "../../components/Drawer/PurchaseDrawer";
 
 function Products() {
   const [data, setData] = useState([]);
@@ -33,14 +36,18 @@ function Products() {
     sort: "asc",
   });
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const isTab = useMediaQuery(theme.breakpoints.down("md"));
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const { cart, addToCart, removeFromCart } = useCart();
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const url = `
-        http://localhost:3001/products?availability=${
+        const url = `/products?availability=${
           selectedFilters
             ?.find((item) => item.includes("Availability"))
             ?.split("--")[0] || null
@@ -49,7 +56,7 @@ function Products() {
             ?.find((item) => item.includes("Category"))
             ?.split("--")[0] || null
         }&order=${selectedSort.order || "item_name"}&sort=${selectedSort.sort}`;
-        const response = await axios.get(url);
+        const response = await api.get(url);
 
         setData(response.data);
         setIsLoading(false);
@@ -78,7 +85,18 @@ function Products() {
     if (tempList.length > filterList.length) setFilterList(tempList);
   }, [data, filterList]);
 
-  console.log("hello");
+  const handleAddToCartClick = (itemId) => {
+    addToCart(itemId);
+  };
+
+  const handleRemoveFromCartClick = (itemId) => {
+    removeFromCart(itemId);
+  };
+
+  const handleBuyClick = (item) => {
+    setSelectedProduct(item);
+    setIsDrawerOpen(true);
+  };
 
   return (
     <Box className={styles["container"]}>
@@ -206,128 +224,157 @@ function Products() {
                   </Box>
                 </Grid2>
               ))
-            : searchedData?.map((product, index) => (
-                <Grid2
-                  key={index}
-                  item
-                  size={{ xs: 6, sm: 4, md: 3 }}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Box
-                    className={styles["card"]}
+            : searchedData?.map((product, index) => {
+                const isInCart = cart.includes(product.item_id);
+
+                return (
+                  <Grid2
+                    key={index}
+                    item
+                    size={{ xs: 6, sm: 4, md: 3 }}
                     sx={{
-                      aspectRatio: isTab ? "1/1.7" : "1/1.5",
-                      boxShadow:
-                        "0 0 5px" +
-                        tinycolor(theme.palette.bg_blue.main).darken(),
+                      display: "flex",
+                      justifyContent: "center",
                     }}
                   >
                     <Box
+                      className={styles["card"]}
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "90%",
-                        aspectRatio: "1/1",
-                        // border: "2px solid" + theme.palette.blue.main,
-                        boxShadow: "0 0 5px" + tinycolor("#fff").darken(),
-                        borderRadius: "10px",
+                        aspectRatio: isTab ? "1/1.7" : "1/1.5",
+                        boxShadow:
+                          "0 0 5px" +
+                          tinycolor(theme.palette.bg_blue.main).darken(),
                       }}
                     >
                       <Box
                         sx={{
-                          backgroundImage: `url(${product.imageUrl})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          width: "80%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "90%",
                           aspectRatio: "1/1",
+                          // border: "2px solid" + theme.palette.blue.main,
+                          boxShadow: "0 0 5px" + tinycolor("#fff").darken(),
+                          borderRadius: "10px",
                         }}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        width: "80%",
-                      }}
-                    >
-                      <Box sx={{ width: "100%" }}>
-                        <Typography
+                      >
+                        <Box
                           sx={{
-                            fontSize: !isTab ? "120%" : "90%",
-                            color: theme.palette.black.main,
-                            fontWeight: 500,
-                            mt: "5px",
+                            backgroundImage: `url(${product.imageUrl})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            width: "80%",
+                            aspectRatio: "1/1",
                           }}
-                        >
-                          {product.item_name}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            fontSize: !isTab ? "110%" : "80%",
-                            color: theme.palette.gray.main,
-                          }}
-                        >
-                          LKR {product.price}
-                        </Typography>
-                        {!isTab && (
-                          <Typography
-                            sx={{
-                              fontSize: "90%",
-                              color: theme.palette.light_gray.main,
-                            }}
-                          >
-                            {product.description}
-                          </Typography>
-                        )}
+                        />
                       </Box>
                       <Box
                         sx={{
-                          width: "100%",
                           flexGrow: 1,
                           display: "flex",
                           flexDirection: "column",
-                          justifyContent: "flex-end",
-                          mt: "10px",
+                          justifyContent: "space-between",
+                          width: "80%",
                         }}
                       >
-                        <Stack
-                          direction={isMobile ? "column" : "row"}
-                          spacing={1}
+                        <Box sx={{ width: "100%" }}>
+                          <Typography
+                            sx={{
+                              fontSize: !isTab ? "120%" : "90%",
+                              color: theme.palette.black.main,
+                              fontWeight: 500,
+                              mt: "5px",
+                            }}
+                          >
+                            {product.item_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: !isTab ? "110%" : "80%",
+                              color: theme.palette.gray.main,
+                            }}
+                          >
+                            LKR {product.price}
+                          </Typography>
+                          {!isTab && (
+                            <Typography
+                              sx={{
+                                fontSize: "90%",
+                                color: theme.palette.light_gray.main,
+                              }}
+                            >
+                              {product.description}
+                            </Typography>
+                          )}
+                        </Box>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            flexGrow: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            mt: "10px",
+                          }}
                         >
-                          <Button
-                            size="small"
-                            variant="contained"
-                            sx={{
-                              bgcolor: theme.palette.green.main,
-                              flexGrow: 1,
-                            }}
+                          <Stack
+                            direction={isMobile ? "column" : "row"}
+                            spacing={1}
                           >
-                            Buy Now
-                          </Button>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            sx={{
-                              color: theme.palette.green.main,
-                              borderColor: theme.palette.green.main,
-                            }}
-                          >
-                            <ShoppingCartIcon />
-                          </Button>
-                        </Stack>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              sx={{
+                                bgcolor: theme.palette.green.main,
+                                flexGrow: 1,
+                              }}
+                              onClick={() => handleBuyClick(product)}
+                            >
+                              Buy Now
+                            </Button>
+                            {!isInCart ? (
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  color: theme.palette.green.main,
+                                  borderColor: theme.palette.green.main,
+                                }}
+                                onClick={() =>
+                                  handleAddToCartClick(product.item_id)
+                                }
+                              >
+                                <AddShoppingCartRoundedIcon />
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                  color: "red",
+                                  borderColor: "red",
+                                }}
+                                onClick={() =>
+                                  handleRemoveFromCartClick(product.item_id)
+                                }
+                              >
+                                <RemoveShoppingCartRoundedIcon />
+                              </Button>
+                            )}
+                          </Stack>
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                </Grid2>
-              ))}
+                  </Grid2>
+                );
+              })}
         </Grid2>
       </Box>
+      <PurchaseDrawer
+        open={isDrawerOpen}
+        item={selectedProduct}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </Box>
   );
 }

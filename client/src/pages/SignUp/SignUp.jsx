@@ -18,7 +18,6 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import axios from "axios";
 
 import styles from "./SignUp.module.css";
 import { theme } from "../../theme";
@@ -30,6 +29,7 @@ import { ValidateNICNumber } from "../../helpers/validateNICNumber";
 import CustomAlert from "../../components/Other/CustomAlert";
 import VerificationWindow from "../../components/VerificationWindow/VerificationWindow";
 import CustomBuffer from "../../components/UI/CustomBuffer";
+import api from "../../api/api";
 
 function SignUp() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -158,12 +158,10 @@ function SignUp() {
     if (validateData()) {
       setIsBuffering(true);
       try {
-        const response = await axios.post(
-          "http://localhost:3001/verification/set-otp",
-          { email: data.email }
-        );
+        await api.post("/verification/set-otp", {
+          email: data.email,
+        });
         setIsVerifying(true);
-        console.log(response);
       } catch (error) {
         console.log(error);
         setError(error?.response?.data?.message);
@@ -175,13 +173,9 @@ function SignUp() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/auth-patient/register",
-        {
-          data,
-        }
-      );
-      console.log(response);
+      await api.post("/auth-patient/register", {
+        data,
+      });
       setTimeout(() => {
         navigate("/login");
       }, 1000);
@@ -387,7 +381,7 @@ function SignUp() {
 
             <Typography sx={{ fontSize: "80%", fontWeight: "bold" }}>
               Already have an account?{" "}
-              <Link to={"/signin"} style={{ color: "blue" }}>
+              <Link to={"/login"} style={{ color: "blue" }}>
                 Login
               </Link>
             </Typography>

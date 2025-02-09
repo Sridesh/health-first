@@ -13,3 +13,5 @@ const roleCheck = (roles) => {
     next();
   };
 };
+
+module.exports = { authMiddleware, roleCheck };

@@ -2,10 +2,11 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const { patientLogin, patientRegister } = require("../models/patientAuthModel");
+const { getUserByEmail, getUserById } = require("../models/patientModel");
 
 const userRegister = async (req, res) => {
   try {
-    const user = await req.body.data;
+    const user = req.body.data;
 
     const salt = await bcrypt.genSalt(12);
     const hashed_password = await bcrypt.hash(user.password, salt);
@@ -19,30 +20,98 @@ const userRegister = async (req, res) => {
     };
 
     const response = await patientRegister(newUser);
-    res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (error) {
     console.log(error);
 
-    res.status(500).json({ message: "Unsuccessful" });
+    return res.status(500).json({ message: "Unsuccessful" });
   }
 };
 
 const patientUserLogin = async (req, res) => {
   try {
-    const response = await patientLogin(req.body);
-    if (response === 1) {
-      res
-        .status(200)
-        .json({ message: "Successfully Logged In", response: response });
-    } else {
-      res.status(200).json({
-        message: "Invalid Email or Password. Try Again",
-        response: response,
+    const { email, password } = req.body;
+
+    const user = await getUserByEmail(email);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "A user for this email does not exist.",
       });
     }
+
+    const isValid = await bcrypt.compare(password, user.hashed_password);
+
+    if (!isValid) {
+      return res.status(401).json({
+        message: "Incorrect Password",
+      });
+    }
+
+    req.session.userId = user.patient_uuid;
+    req.session.userRole = user.role;
+
+    // await new Promise((resolve, reject) => {
+    //   req.session.save((err) => {
+    //     if (err) {
+    //       console.error("Session save error:", err);
+    //       reject(err);
+    //     }
+    //     resolve();
+    //   });
+    // });
+
+    await new Promise((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          reject(err);
+        }
+        resolve();
+      });
+    });
+
+    // Log Set-Cookie header
+    res.setHeader("Set-Cookie", req.session.cookie);
+
+    const { hashed_password, ...loggedUser } = user;
+
+    return res.status(200).json({
+      message: "Logged in successfully",
+      user: loggedUser,
+    });
   } catch (error) {
-    res.status(500).send(error);
+    console.log("login", error);
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
-module.exports = { userRegister, patientUserLogin };
+const getCurrentUser = async (req, res) => {
+  try {
+    const id = req.session.userId;
+
+    if (!id) {
+      return res.status(401).json({ message: "Not Authenticated" });
+    }
+
+    const userData = await getUserById(id);
+
+    if (!userData) {
+      return res.status(404).json({
+        message: "User Not Found",
+      });
+    }
+
+    const { hashed_password, ...user } = userData;
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
+
+const userLogout = async (req, res) => {};
+
+module.exports = { userRegister, patientUserLogin, getCurrentUser, userLogout };

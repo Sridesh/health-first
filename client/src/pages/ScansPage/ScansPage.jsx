@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import styles from "./ScansPage.module.css";
 import { theme } from "../../theme";
 
-import axios from "axios";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -12,6 +11,7 @@ import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 
 import Header from "../../components/Header/Header";
 import ServiceList from "../../components/ServiceList/ServiceList";
+import api from "../../api/api";
 
 const Option = ({ icon, text }) => (
   <Box
@@ -41,7 +41,7 @@ function ScansPage() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/scans");
+        const response = await api.get("/scans");
         setData(response.data);
       } catch (error) {
         console.log(error);

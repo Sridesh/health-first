@@ -74,8 +74,6 @@ function FilterContainer({
     }
   };
 
-  console.log(filters, typeof filters, selectedFilterValues);
-
   const handleFilterSelect = (filter, filterName) => {
     if (isSingleFilter) setSelectedSingleFilter(filter);
     else {
