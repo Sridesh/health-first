@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "./api/api";
 
 function Dev() {
   const [file, setFile] = useState(null);
@@ -24,7 +24,7 @@ function Dev() {
       try {
         data.append("file", file);
 
-        const response = await axios.post("http://localhost:3001/dev", data);
+        const response = await api.post("/dev", data);
         console.log(response);
         alert("success");
       } catch (error) {

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import styles from "./LabServices.module.css";
 import { theme } from "../../theme";
 
-import axios from "axios";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import SupportAgentRoundedIcon from "@mui/icons-material/SupportAgentRounded";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -13,6 +12,7 @@ import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import Header from "../../components/Header/Header";
 import ServiceList from "../../components/ServiceList/ServiceList";
 import FilterContainer from "../../components/FilterContainer/FilterContainer";
+import api from "../../api/api";
 
 const Option = ({ icon, text }) => (
   <Box
@@ -51,8 +51,8 @@ function LabServices() {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const url = `http://localhost:3001/test/get-medi-tests?filter=${selectedFilters}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
-        const response = await axios.get(url);
+        const url = `/test/get-medi-tests?filter=${selectedFilters}&order=${selectedSort.order}&sort=${selectedSort.sort}`;
+        const response = await api.get(url);
 
         setData(response.data);
       } catch (error) {

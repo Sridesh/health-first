@@ -32,5 +32,8 @@ export const theme = createTheme({
     light_gray: {
       main: "#868686",
     },
+    bg_gray: {
+      main: "#f4f6f6",
+    },
   },
 });

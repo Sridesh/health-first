@@ -18,7 +18,7 @@ const patientRegister = async (patient) => {
 
     return { message: "Account created successfully" };
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -26,13 +26,14 @@ const patientRegister = async (patient) => {
 const patientLogin = async (patient) => {
   try {
     const response = await pool.query(
-      "SELECT * FROM patient WHERE email = $1 AND password = $2",
-      [patient.email, patient.password]
+      "SELECT * FROM patient WHERE email = $1;",
+      [patient.email]
     );
 
     return response.rowCount;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 

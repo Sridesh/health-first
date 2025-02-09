@@ -1,7 +1,7 @@
 const redisService = require("../../config/redis");
 const generateOTP = require("../../helpers/generateOTP");
 const nodemailer = require("nodemailer");
-const { isUserExist } = require("../../models/patientModel");
+const { getUserByEmail } = require("../../models/patientModel");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -21,7 +21,7 @@ const setOTP = async (req, res) => {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    if (await isUserExist(email.toLowerCase())) {
+    if (await getUserByEmail(email.toLowerCase())) {
       return res
         .status(409)
         .json({ message: "Email already registered. Try logging in." });
@@ -75,19 +75,19 @@ const verifyOTP = async (req, res) => {
       // Clear failed attempts on successful verification
       await redisService.client.del(`failed:${redisService.hashKey(email)}`);
 
-      res.status(200).json({ message: "OTP verified successfully" });
+      return res.status(200).json({ message: "OTP verified successfully" });
     } else {
       // Track failed attempt
       await redisService.trackFailedAttempt(email);
 
       // Check if account should be locked after this attempt
       if (await redisService.isAccountLocked(email)) {
-        res.status(403).json({
+        return res.status(403).json({
           message:
             "Account locked due to too many failed attempts. Please try again later.",
         });
       } else {
-        res.status(401).json({ message: "Invalid OTP" });
+        return res.status(401).json({ message: "Invalid OTP" });
       }
     }
   } catch (error) {

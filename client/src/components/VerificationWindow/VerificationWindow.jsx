@@ -17,8 +17,7 @@ import { theme } from "../../theme";
 import CustomAlert from "../Other/CustomAlert";
 import CustomProgress from "../CustomProgress/CustomProgress";
 import Timer from "../Other/Timer";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 
 function VerificationWindow({ open, email, onSuccess, onCancel }) {
   const [otp, setOtp] = useState("");
@@ -31,8 +30,6 @@ function VerificationWindow({ open, email, onSuccess, onCancel }) {
   });
 
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -55,15 +52,15 @@ function VerificationWindow({ open, email, onSuccess, onCancel }) {
     onSuccess();
   };
 
-  const handleResendCode = () => {};
+  // const handleResendCode = () => {};
 
   const handleVerification = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:3001/verification/verify-otp",
-        { email, otp }
-      );
+      const response = await api.post("verification/verify-otp", {
+        email,
+        otp,
+      });
 
       setAlertOptions({
         open: true,
