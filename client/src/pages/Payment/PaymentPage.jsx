@@ -10,13 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import InputMask from "react-input-mask";
 
 import styles from "./Payment.module.css";
 
 import { usePaymentAccess } from "../../hooks/usePaymentAccess";
 import { theme } from "../../theme";
-import { districts } from "../../data";
+import { districts, regexStrings } from "../../data";
+import { formatCardNumber } from "../../helpers/formatCardNumber";
+import { validateMonth, validateYear } from "../../helpers/validateExp";
+import CustomAlert from "../../components/Other/CustomAlert";
 
 function PaymentPage() {
   const { revokePaymentAccess } = usePaymentAccess();
@@ -42,6 +44,8 @@ function PaymentPage() {
     cvv: "",
   });
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     return () => {
       revokePaymentAccess();
@@ -56,15 +60,111 @@ function PaymentPage() {
     };
   }, [location]);
 
-  const handleAddressChange = () => {};
+  const handleAddressChange = (e, isSelect) => {
+    if (isSelect && e) {
+      setAddress((prev) => {
+        return {
+          ...prev,
+          district: e,
+        };
+      });
+
+      return;
+    } else {
+      const { name, value } = e.target;
+
+      if (name === "zipCode") {
+        if (regexStrings.onlyNumbers.test(value)) {
+          setAddress((prev) => {
+            return {
+              ...prev,
+              [name]: value.slice(0, 5),
+            };
+          });
+
+          return;
+        }
+      } else {
+        setAddress((prev) => {
+          return {
+            ...prev,
+            [name]: value,
+          };
+        });
+
+        return;
+      }
+    }
+  };
 
   const handleCardChanges = (e) => {
-    setFormData((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
+    const { name, value } = e.target;
+
+    if (name === "cardNumber") {
+      const formattedNumber = formatCardNumber(value);
+
+      setFormData((prev) => {
+        return {
+          ...prev,
+          cardNumber: formattedNumber,
+        };
+      });
+    } else if (name === "holderName") {
+      if (regexStrings.onlyLetters.test(value)) {
+        setFormData((prev) => {
+          return {
+            ...prev,
+            [name]: value,
+          };
+        });
+      }
+    } else if (name === "cvv") {
+      setFormData((prev) => {
+        return {
+          ...prev,
+          cvv: value.slice(0, 3),
+        };
+      });
+    } else {
+      setFormData((prev) => {
+        return {
+          ...prev,
+          [name]: value.slice(0, 2),
+        };
+      });
+    }
+    // setFormData((prev) => {
+    //   return {
+    //     ...prev,
+    //     [name]: value,
+    //   };
+    // });
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const validate = (type) => {
+    if (type === "month") {
+      const date = validateMonth(formData.expMonth);
+      console.log(date);
+
+      if (date) {
+        setFormData((prev) => {
+          return {
+            ...prev,
+            expMonth: date,
+          };
+        });
+      } else {
+        setError("Expire Month Invalid");
+      }
+    } else {
+      if (validateYear(formData.expYear)) {
+        setError("Expire Date Invalid");
+      }
+    }
   };
 
   return (
@@ -142,6 +242,7 @@ function PaymentPage() {
               sx={{ flex: 1, width: "100%" }}
               type="text"
               label="Address"
+              name="address"
               value={address.address}
               onChange={handleAddressChange}
             />
@@ -153,6 +254,7 @@ function PaymentPage() {
               sx={{ flex: 1, width: "100%" }}
               type="text"
               label="City"
+              name="city"
               value={address.city}
               onChange={handleAddressChange}
             />
@@ -162,7 +264,8 @@ function PaymentPage() {
               size="small"
               isOptionEqualToValue={(value, option) => value === option}
               value={address.district}
-              onChange={handleAddressChange}
+              name="district"
+              onChange={(e, value) => handleAddressChange(value, true)}
               id="controllable-states-demo"
               options={districts}
               renderInput={(params) => (
@@ -174,6 +277,7 @@ function PaymentPage() {
           <Grid2 item size={{ sx: 12, sm: 5 }} sx={{ flex: 1 }}>
             <TextField
               required
+              name="zipCode"
               size="small"
               sx={{ flex: 1, width: "100%" }}
               type="text"
@@ -213,7 +317,7 @@ function PaymentPage() {
             type="text"
             label="Card Number"
             name="cardNumber"
-            value={address.cardNumber}
+            value={formData.cardNumber}
             onChange={handleCardChanges}
           />
         </Grid2>
@@ -228,6 +332,7 @@ function PaymentPage() {
             name="expMonth"
             value={formData.expMonth}
             onChange={handleCardChanges}
+            onBlur={() => validate("month")}
           />
         </Grid2>
         <Typography sx={{ fontSize: "140%" }}>/</Typography>
@@ -238,10 +343,11 @@ function PaymentPage() {
             sx={{ flex: 1, width: "100%" }}
             type="text"
             label="Exp Year"
-            name="expYEar"
+            name="expYear"
             placeholder="YY"
             value={formData.expYear}
             onChange={handleCardChanges}
+            onBlur={() => validate("year")}
           />
         </Grid2>
         <Grid2 item size={{ sx: 5, sm: 4 }} sx={{ flex: 1 }}>
@@ -250,7 +356,8 @@ function PaymentPage() {
             size="small"
             sx={{ flex: 1, width: "100%" }}
             type="text"
-            label="Zip Code"
+            label="cvv"
+            name="cvv"
             value={formData.cvv}
             onChange={handleCardChanges}
           />
@@ -258,6 +365,12 @@ function PaymentPage() {
       </Grid2>
 
       <Box className={styles["payment"]}></Box>
+
+      <CustomAlert
+        message={error}
+        severity={"error"}
+        open={error ? true : false}
+      />
     </Box>
   );
 }
