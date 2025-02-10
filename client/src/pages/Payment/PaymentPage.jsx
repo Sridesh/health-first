@@ -50,7 +50,7 @@ function PaymentPage() {
     return () => {
       revokePaymentAccess();
     };
-  }, []);
+  }, [revokePaymentAccess]);
 
   useEffect(() => {
     return () => {
@@ -58,7 +58,7 @@ function PaymentPage() {
         revokePaymentAccess();
       }
     };
-  }, [location]);
+  }, [location, revokePaymentAccess]);
 
   const handleAddressChange = (e, isSelect) => {
     if (isSelect && e) {
@@ -110,7 +110,7 @@ function PaymentPage() {
         };
       });
     } else if (name === "holderName") {
-      if (regexStrings.onlyLetters.test(value)) {
+      if (/^[^\d]*$/.test(value)) {
         setFormData((prev) => {
           return {
             ...prev,
@@ -147,6 +147,7 @@ function PaymentPage() {
 
   const validate = (type) => {
     if (type === "month") {
+      setError(null);
       const date = validateMonth(formData.expMonth);
       console.log(date);
 
@@ -161,8 +162,10 @@ function PaymentPage() {
         setError("Expire Month Invalid");
       }
     } else {
-      if (validateYear(formData.expYear)) {
+      if (!validateYear(formData.expYear)) {
         setError("Expire Date Invalid");
+      } else {
+        setError(null);
       }
     }
   };
@@ -290,80 +293,81 @@ function PaymentPage() {
       </>
 
       {/* Payment Details */}
-      <Stack sx={{ width: "80%", mt: "70px" }} direction={"row"}>
-        <Typography variant="h5" sx={{ ml: "60px", flex: 3 }}>
-          Billing
-        </Typography>
-      </Stack>
-      <Divider sx={{ width: "80%" }} />
-      <Grid2 container sx={{ flex: 1, mt: "20px", width: "80%" }} gap={2}>
-        <Grid2 item size={{ sx: 12, sm: 5 }} sx={{ flex: 1 }}>
-          <TextField
-            required
-            size="small"
-            sx={{ flex: 1, width: "100%" }}
-            type="text"
-            label="Card Holder Name"
-            name="holderName"
-            value={formData.holderName}
-            onChange={handleCardChanges}
-          />
+      <>
+        <Stack sx={{ width: "80%", mt: "70px" }} direction={"row"}>
+          <Typography variant="h5" sx={{ ml: "60px", flex: 3 }}>
+            Billing
+          </Typography>
+        </Stack>
+        <Divider sx={{ width: "80%" }} />
+        <Grid2 container sx={{ flex: 1, mt: "20px", width: "80%" }} gap={2}>
+          <Grid2 item size={{ sx: 12, sm: 5 }} sx={{ flex: 1 }}>
+            <TextField
+              required
+              size="small"
+              sx={{ flex: 1, width: "100%" }}
+              type="text"
+              label="Card Holder Name"
+              name="holderName"
+              value={formData.holderName}
+              onChange={handleCardChanges}
+            />
+          </Grid2>
+          <Grid2 item size={{ sx: 12, sm: 5 }} sx={{ flex: 1 }}>
+            <TextField
+              required
+              size="small"
+              sx={{ flex: 1, width: "100%" }}
+              type="text"
+              label="Card Number"
+              name="cardNumber"
+              value={formData.cardNumber}
+              onChange={handleCardChanges}
+            />
+          </Grid2>
+          <Grid2 item size={{ sx: 12, sm: 3 }} sx={{ flex: 1 }}>
+            <TextField
+              required
+              size="small"
+              sx={{ flex: 1, width: "100%" }}
+              type="text"
+              label="Exp Month"
+              placeholder="MM"
+              name="expMonth"
+              value={formData.expMonth}
+              onChange={handleCardChanges}
+              onBlur={() => validate("month")}
+            />
+          </Grid2>
+          <Typography sx={{ fontSize: "140%" }}>/</Typography>
+          <Grid2 item size={{ sx: 5, sm: 3 }} sx={{ flex: 1 }}>
+            <TextField
+              required
+              size="small"
+              sx={{ flex: 1, width: "100%" }}
+              type="text"
+              label="Exp Year"
+              name="expYear"
+              placeholder="YY"
+              value={formData.expYear}
+              onChange={handleCardChanges}
+              onBlur={() => validate("year")}
+            />
+          </Grid2>
+          <Grid2 item size={{ sx: 5, sm: 4 }} sx={{ flex: 1 }}>
+            <TextField
+              required
+              size="small"
+              sx={{ flex: 1, width: "100%" }}
+              type="text"
+              label="cvv"
+              name="cvv"
+              value={formData.cvv}
+              onChange={handleCardChanges}
+            />
+          </Grid2>
         </Grid2>
-        <Grid2 item size={{ sx: 12, sm: 5 }} sx={{ flex: 1 }}>
-          <TextField
-            required
-            size="small"
-            sx={{ flex: 1, width: "100%" }}
-            type="text"
-            label="Card Number"
-            name="cardNumber"
-            value={formData.cardNumber}
-            onChange={handleCardChanges}
-          />
-        </Grid2>
-        <Grid2 item size={{ sx: 12, sm: 3 }} sx={{ flex: 1 }}>
-          <TextField
-            required
-            size="small"
-            sx={{ flex: 1, width: "100%" }}
-            type="text"
-            label="Exp Month"
-            placeholder="MM"
-            name="expMonth"
-            value={formData.expMonth}
-            onChange={handleCardChanges}
-            onBlur={() => validate("month")}
-          />
-        </Grid2>
-        <Typography sx={{ fontSize: "140%" }}>/</Typography>
-        <Grid2 item size={{ sx: 5, sm: 3 }} sx={{ flex: 1 }}>
-          <TextField
-            required
-            size="small"
-            sx={{ flex: 1, width: "100%" }}
-            type="text"
-            label="Exp Year"
-            name="expYear"
-            placeholder="YY"
-            value={formData.expYear}
-            onChange={handleCardChanges}
-            onBlur={() => validate("year")}
-          />
-        </Grid2>
-        <Grid2 item size={{ sx: 5, sm: 4 }} sx={{ flex: 1 }}>
-          <TextField
-            required
-            size="small"
-            sx={{ flex: 1, width: "100%" }}
-            type="text"
-            label="cvv"
-            name="cvv"
-            value={formData.cvv}
-            onChange={handleCardChanges}
-          />
-        </Grid2>
-      </Grid2>
-
+      </>
       <Box className={styles["payment"]}></Box>
 
       <CustomAlert
