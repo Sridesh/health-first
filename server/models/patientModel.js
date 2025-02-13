@@ -1,48 +1,58 @@
 const pool = require("../config/db");
-const validator = require("validator");
 
 const getAllPatients = async () => {
-  const results = await pool.query("SELECT * FROM patient");
-  console.log(results);
-
-  return results.rows;
-};
-
-const getUserByEmail = async (email) => {
   try {
-    if (!validator.isEmail(email)) {
-      return null;
-    }
-
     const results = await pool.query(
-      `SELECT * FROM patient WHERE email = $1 LIMIT 1;`,
-      [email]
+      "SELECT * FROM users WHERE role = 'patient'"
     );
 
-    const { rows } = results;
-
-    return rows[0] || null;
+    return results.rows;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
 
-const getUserById = async (id) => {
+const getPatientById = async (id) => {
   try {
-    if (!validator.isUUID(id, [4])) {
-      return null;
-    }
     const results = await pool.query(
-      `SELECT * FROM patient WHERE patient_uuid = $1 LIMIT 1;`,
+      `SELECT 
+    u.user_uuid,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number,
+    u.gender,
+    u.nic,
+    ARRAY_AGG(
+        json_build_object(
+            'order_number', o.order_number,
+            'status', o.status,
+            'total', o.total,
+            'order_date', o.order_date
+        )
+    ) as orders
+FROM users u 
+LEFT JOIN orders o ON o.patient_id = u.user_uuid 
+WHERE user_uuid = $1 
+GROUP BY 
+    u.user_uuid,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.phone_number,
+    u.gender,
+    u.nic;`,
       [id]
     );
 
-    const { rows } = results;
+    console.log("res", results);
 
-    return rows[0] || null;
+    return results.rows[0];
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };
 
-module.exports = { getAllPatients, getUserByEmail, getUserById };
+module.exports = { getAllPatients, getPatientById };

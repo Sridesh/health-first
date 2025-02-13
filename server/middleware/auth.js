@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
 
 const roleCheck = (roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.session.userRole)) {
+    if (!roles.includes(req.session.role)) {
       return res.status(403).json({ message: "Access Forbidden" });
     }
     next();

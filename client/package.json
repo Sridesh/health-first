@@ -20,6 +20,7 @@
     "@react-google-maps/api": "^2.20.5",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "fs": "^0.0.1-security",
     "https": "^1.0.0",

@@ -1,22 +1,27 @@
 import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import CustomBuffer from "../components/UI/CustomBuffer";
+import { useEffect } from "react";
 
 function PrivateRoute({ children, requiredRoles = [] }) {
   const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
 
   if (isLoading) {
     return <CustomBuffer />;
   }
 
   if (!user) {
-    <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (requiredRoles.length > 0 && !requiredRoles.includes(user.role)) {
-    <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return children;

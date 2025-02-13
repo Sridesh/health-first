@@ -1,10 +1,12 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const { patientLogin, patientRegister } = require("../models/patientAuthModel");
-const { getUserByEmail, getUserById } = require("../models/patientModel");
+const {
+  userRegister,
+  getUserValidity,
+  getUserById,
+} = require("../models/userAuthModel");
 
-const userRegister = async (req, res) => {
+const userRegisterCtrl = async (req, res) => {
   try {
     const user = req.body.data;
 
@@ -19,7 +21,7 @@ const userRegister = async (req, res) => {
       hashed_password: hashed_password,
     };
 
-    const response = await patientRegister(newUser);
+    const response = await userRegister(newUser);
     return res.status(200).json(response);
   } catch (error) {
     console.log(error);
@@ -28,11 +30,11 @@ const userRegister = async (req, res) => {
   }
 };
 
-const patientUserLogin = async (req, res) => {
+const userLoginCtrl = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
-    const user = await getUserByEmail(email);
+    const user = await getUserValidity(email, role);
 
     if (!user) {
       return res.status(401).json({
@@ -48,45 +50,28 @@ const patientUserLogin = async (req, res) => {
       });
     }
 
-    req.session.userId = user.patient_uuid;
-    req.session.userRole = user.role;
+    try {
+      req.session.userId = user.user_uuid;
+      req.session.role = user.role;
 
-    // await new Promise((resolve, reject) => {
-    //   req.session.save((err) => {
-    //     if (err) {
-    //       console.error("Session save error:", err);
-    //       reject(err);
-    //     }
-    //     resolve();
-    //   });
-    // });
+      await req.session.save();
 
-    await new Promise((resolve, reject) => {
-      req.session.save((err) => {
-        if (err) {
-          console.error("Session save error:", err);
-          reject(err);
-        }
-        resolve();
-      });
-    });
+      const { hashed_password, ...loggedUser } = user;
 
-    // Log Set-Cookie header
-    res.setHeader("Set-Cookie", req.session.cookie);
-
-    const { hashed_password, ...loggedUser } = user;
-
-    return res.status(200).json({
-      message: "Logged in successfully",
-      user: loggedUser,
-    });
+      return res
+        .status(200)
+        .json({ message: "Logged in successfully", user: loggedUser });
+    } catch (error) {
+      console.error("Session Error: ", error);
+      return res.status(500).json({ message: "Server Error" });
+    }
   } catch (error) {
     console.log("login", error);
     return res.status(500).json({ message: "Server Error" });
   }
 };
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUserCtrl = async (req, res) => {
   try {
     const id = req.session.userId;
 
@@ -112,6 +97,11 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-const userLogout = async (req, res) => {};
+const userLogoutCtrl = async (req, res) => {};
 
-module.exports = { userRegister, patientUserLogin, getCurrentUser, userLogout };
+module.exports = {
+  userRegisterCtrl,
+  userLoginCtrl,
+  getCurrentUserCtrl,
+  userLogoutCtrl,
+};

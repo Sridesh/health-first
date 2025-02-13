@@ -13,10 +13,10 @@ export const AuthReducer = (state, action) => {
 
 export const LoaderReducer = (state, action) => {
   switch (action.type) {
-    case "START_LOADING":
+    case "START_LOADER":
       return true;
 
-    case "STOP_LOADING":
+    case "STOP_LOADER":
       return false;
 
     default:
