@@ -10,4 +10,17 @@ const getPatientList = async (req, res, next) => {
   }
 };
 
-module.exports = { getPatientList };
+const getPatientByIdCtrl = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const patient = await patientModel.getPatientById(id);
+    res.status(200).json(patient);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "Server Error. Could not fetch patient" });
+  }
+};
+
+module.exports = { getPatientList, getPatientByIdCtrl };

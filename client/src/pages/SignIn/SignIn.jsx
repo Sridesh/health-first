@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -20,6 +20,7 @@ import { theme } from "../../theme";
 import image from "/signup.jpg";
 
 import { useAuth } from "../../hooks/useAuth";
+import CustomAlert from "../../components/Other/CustomAlert";
 
 function SignIn() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -35,7 +36,25 @@ function SignIn() {
 
   const [isInvalid, setIsInvalid] = useState(false);
 
+  const [errorAlert, setErrorAlert] = useState({
+    open: false,
+    severity: "error",
+    message: "",
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (errorAlert.open) {
+      setTimeout(() => {
+        setErrorAlert({
+          open: false,
+          severity: "error",
+          message: "",
+        });
+      }, 3000);
+    }
+  });
 
   const handleChange = (e) => {
     setIsInvalid(false);
@@ -50,11 +69,16 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      await login(data.email, data.password);
+      await login(data.email, data.password, "patient");
+
       navigate("/");
       // setIsInvalid(response.data.response === 1 ? false : true);
     } catch (error) {
       console.log(error);
+      setErrorAlert({
+        open: true,
+        message: error.response.data.message,
+      });
     }
   };
 
@@ -157,6 +181,11 @@ function SignIn() {
           </Stack>
         </form>
       </Box>
+      <CustomAlert
+        message={errorAlert.message}
+        severity="error"
+        open={errorAlert.open}
+      />
     </Box>
   );
 }

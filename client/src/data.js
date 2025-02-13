@@ -32,6 +32,17 @@ export const navbarOptions = [
   },
 ];
 
+export const adminNavbarOptions = [
+  {
+    name: "Doctors",
+    link: "doctors",
+  },
+  {
+    name: "Patients",
+    link: "patients",
+  },
+];
+
 export const regexStrings = {
   onlyLetters: /^[A-Za-z]*$/,
   onlyNumbers: /^[0-9]*$/,

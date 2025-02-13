@@ -1,9 +1,9 @@
 const express = require("express");
 const {
-  userRegister,
-  patientUserLogin,
-  userLogout,
-  getCurrentUser,
+  userLoginCtrl,
+  getCurrentUserCtrl,
+  userLogoutCtrl,
+  userRegisterCtrl,
 } = require("../../controllers/userAuthController");
 const createRateLimiter = require("../../middleware/rateLimiter");
 const redisService = require("../../config/redis");
@@ -13,9 +13,9 @@ const router = express.Router();
 
 const loginLimiter = createRateLimiter(redisService.client);
 
-router.post("/register", userRegister);
-router.post("/login", patientUserLogin);
-router.post("/logout", authMiddleware, userLogout);
-router.get("/me", authMiddleware, getCurrentUser);
+router.post("/register", userRegisterCtrl);
+router.post("/login", loginLimiter, userLoginCtrl);
+router.post("/logout", authMiddleware, userLogoutCtrl);
+router.get("/me", authMiddleware, getCurrentUserCtrl);
 
 module.exports = router;

@@ -37,14 +37,18 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, role) => {
     try {
       await api.get("csrf-token");
 
-      const response = await api.post("auth-patient/login", {
-        email,
-        password,
-      });
+      const response = await api.post(
+        role === "admin" ? "auth-patient/login" : "auth-patient/login",
+        {
+          email,
+          password,
+          role,
+        }
+      );
 
       const { user } = response.data;
 
@@ -56,6 +60,11 @@ const AuthProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       console.log("Error at login", error);
+      throw error;
+    } finally {
+      dispatchLoader({
+        type: "STOP_LOADER",
+      });
     }
   };
 
